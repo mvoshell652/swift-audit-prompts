@@ -8,87 +8,87 @@
 
 <img src="docs/screenshot.jpg" width="760" alt="The Swift Audit Prompts page. Your project fields are filled in for an app called Acme with a Firebase backend. Below them, audit A-03 is expanded and its prompt shows Acme, the project path and Firebase highlighted where they were filled in.">
 
-Fill in your app's name and path once and every prompt updates. Copy a prompt, paste it into a fresh Claude Code session in your project, and tick it off once you've triaged the findings. Your project details and progress stay in your browser.
+Fill in your project once and every prompt updates. Copy a prompt into a fresh Claude Code session, and tick it off once you've triaged what it finds.
 
 ## Why
 
-A skill knows what good Swift looks like, but typing `/swiftui-pro` on its own doesn't say what to audit, where to look or how to report back. Each prompt here does: it names what to read, lists what to check, and says how to report back. Most ask for findings by file and line, each with a fix, so the output is something you can triage. A few ask for a plan, a coverage matrix, a checklist, a runbook or a recommendation instead.
+A skill knows what good Swift looks like, but `/swiftui-pro` on its own doesn't say what to audit, where to look or what to hand back. Each prompt here does. It names what to read and what to check, and asks for findings by file and line with a fix for each, so you get a list you can triage. A few ask for a plan, a checklist or a recommendation instead.
 
 ## The prompts
 
 <!-- prompts:start -->
-| ID | Size | Skill | What it checks |
+| ID | What it checks | Skill | Time |
 |---|---|---|---|
-| [A-01](https://mvoshell652.github.io/swift-audit-prompts/#A-01) | XL | `/swiftui-pro` | Flagship SwiftUI quality audit |
-| [A-02](https://mvoshell652.github.io/swift-audit-prompts/#A-02) | L | `/swift-concurrency-expert` | Swift strict concurrency |
-| [A-03](https://mvoshell652.github.io/swift-audit-prompts/#A-03) | L | `/swift-security-expert` | Auth, secrets, app extensions |
-| [A-04](https://mvoshell652.github.io/swift-audit-prompts/#A-04) | L | `/swift-architecture-skill` | Boundaries & dependency injection |
-| [A-05](https://mvoshell652.github.io/swift-audit-prompts/#A-05) | M | `/swiftui-performance-audit` | Rendering performance |
-| [A-06](https://mvoshell652.github.io/swift-audit-prompts/#A-06) | M | `/swiftui-accessibility-auditor` | SwiftUI a11y modifiers |
-| [A-07](https://mvoshell652.github.io/swift-audit-prompts/#A-07) | M | `/ios-accessibility` | Experiential a11y (VoiceOver, Reduce Motion, keyboard) |
-| [A-08](https://mvoshell652.github.io/swift-audit-prompts/#A-08) | M | `/swiftui-liquid-glass` | iOS 26 modernization opportunities |
-| [A-09](https://mvoshell652.github.io/swift-audit-prompts/#A-09) | M | `/swiftui-ui-patterns` | Pattern consistency across screens |
-| [A-10](https://mvoshell652.github.io/swift-audit-prompts/#A-10) | M | `/swiftui-view-refactor` | View decomposition opportunities |
-| [A-11](https://mvoshell652.github.io/swift-audit-prompts/#A-11) | M | `/swiftui-design-principles` | Design system & token fidelity |
-| [A-12](https://mvoshell652.github.io/swift-audit-prompts/#A-12) | S | `/swift-api-design-guidelines-skill` | Swift API surface review |
-| [A-13](https://mvoshell652.github.io/swift-audit-prompts/#A-13) | S | `/swift-format-style` | Style, hygiene & FormatStyle sweep |
-| [A-14](https://mvoshell652.github.io/swift-audit-prompts/#A-14) | L | `/swift-testing-expert` | Test coverage plan |
-| [A-15](https://mvoshell652.github.io/swift-audit-prompts/#A-15) | M | `/figma-to-swiftui` | Figma vs. code coverage gap report |
-| [A-16](https://mvoshell652.github.io/swift-audit-prompts/#A-16) | S | `/swift-accessibility-skill` | Accessibility Inspector audit |
-| [A-17](https://mvoshell652.github.io/swift-audit-prompts/#A-17) | S | `/swift-focusengine-pro` | @FocusState + keyboard navigation |
-| [A-18](https://mvoshell652.github.io/swift-audit-prompts/#A-18) | M | `/swiftdata-pro` | Local persistence / offline cache evaluation |
-| [A-19](https://mvoshell652.github.io/swift-audit-prompts/#A-19) | M | `/writing-for-interfaces` | UI copy + microcopy audit |
-| [A-20](https://mvoshell652.github.io/swift-audit-prompts/#A-20) | M | `/ios-simulator-skill` | Runtime smoke test runbook |
-| [A-21](https://mvoshell652.github.io/swift-audit-prompts/#A-21) | XL | `/review-swarm` | Multi-agent parallel code review |
-| [A-22](https://mvoshell652.github.io/swift-audit-prompts/#A-22) | L | `/bug-hunt-swarm` | Focused bug hunt across the codebase |
+| [A‑01](https://mvoshell652.github.io/swift-audit-prompts/#A-01) | SwiftUI quality baseline | `/swiftui-pro` | 1 day |
+| [A‑02](https://mvoshell652.github.io/swift-audit-prompts/#A-02) | Strict concurrency and data races | `/swift-concurrency-expert` | 4 hours |
+| [A‑03](https://mvoshell652.github.io/swift-audit-prompts/#A-03) | Auth, secrets and app extensions | `/swift-security-expert` | 4 hours |
+| [A‑04](https://mvoshell652.github.io/swift-audit-prompts/#A-04) | Architecture boundaries and dependency injection | `/swift-architecture-skill` | 4 hours |
+| [A‑05](https://mvoshell652.github.io/swift-audit-prompts/#A-05) | Rendering performance | `/swiftui-performance-audit` | 3 hours |
+| [A‑06](https://mvoshell652.github.io/swift-audit-prompts/#A-06) | SwiftUI accessibility modifiers | `/swiftui-accessibility-auditor` | 3 hours |
+| [A‑07](https://mvoshell652.github.io/swift-audit-prompts/#A-07) | VoiceOver, keyboard and other assistive tech | `/ios-accessibility` | 3 hours |
+| [A‑08](https://mvoshell652.github.io/swift-audit-prompts/#A-08) | Liquid Glass and iOS 26 APIs | `/swiftui-liquid-glass` | 3 hours |
+| [A‑09](https://mvoshell652.github.io/swift-audit-prompts/#A-09) | Consistent UI patterns across screens | `/swiftui-ui-patterns` | 3 hours |
+| [A‑10](https://mvoshell652.github.io/swift-audit-prompts/#A-10) | Oversized views to break up | `/swiftui-view-refactor` | 3 hours |
+| [A‑11](https://mvoshell652.github.io/swift-audit-prompts/#A-11) | Design tokens and visual consistency | `/swiftui-design-principles` | 3 hours |
+| [A‑12](https://mvoshell652.github.io/swift-audit-prompts/#A-12) | API naming and design | `/swift-api-design-guidelines-skill` | 2 hours |
+| [A‑13](https://mvoshell652.github.io/swift-audit-prompts/#A-13) | Code hygiene and value formatting | `/swift-format-style` | 2 hours |
+| [A‑14](https://mvoshell652.github.io/swift-audit-prompts/#A-14) | Test coverage plan | `/swift-testing-expert` | 4 hours |
+| [A‑15](https://mvoshell652.github.io/swift-audit-prompts/#A-15) | Figma designs missing from the code | `/figma-to-swiftui` | 3 hours |
+| [A‑16](https://mvoshell652.github.io/swift-audit-prompts/#A-16) | Accessibility Inspector checks | `/swift-accessibility-skill` | 2 hours |
+| [A‑17](https://mvoshell652.github.io/swift-audit-prompts/#A-17) | Focus and keyboard navigation | `/swift-focusengine-pro` | 2 hours |
+| [A‑18](https://mvoshell652.github.io/swift-audit-prompts/#A-18) | Offline caching with SwiftData | `/swiftdata-pro` | 3 hours |
+| [A‑19](https://mvoshell652.github.io/swift-audit-prompts/#A-19) | Interface copy and tone | `/writing-for-interfaces` | 3 hours |
+| [A‑20](https://mvoshell652.github.io/swift-audit-prompts/#A-20) | Simulator smoke test runbook | `/ios-simulator-skill` | 3 hours |
+| [A‑21](https://mvoshell652.github.io/swift-audit-prompts/#A-21) | Multi-agent code review | `/review-swarm` | 1 day |
+| [A‑22](https://mvoshell652.github.io/swift-audit-prompts/#A-22) | Bug hunt across the codebase | `/bug-hunt-swarm` | 4 hours |
 <!-- prompts:end -->
 
-Sizes are the rough time to run an audit and triage what it finds: S about 2 hours, M about 3, L about 4, XL about a day. Run them in order. A-01 sets the baseline, A-02 to A-04 cover foundational correctness, and A-21 and A-22 are multi-agent sweeps best saved for last.
+Times are rough and include triaging the findings. Run the audits in order: A-01 sets the baseline, A-02 to A-04 cover foundational correctness, and A-21 and A-22 run several agents across the whole codebase, so save them for last.
 
 ## How to use
 
-1. Open the page and fill in **Your project**: app name, project path, iOS deployment target and Swift version. Backend and Figma file are optional, and the lines that mention them drop out of the prompts when they're blank.
-2. Install the skills you plan to run (listed below).
+1. Open the page and fill in **Your project**: app name, project path, iOS deployment target and Swift version. Backend and Figma file are optional. Leave them blank and the prompts skip them.
+2. Install the skill for each audit you plan to run. They're listed below.
 3. Open a fresh Claude Code session in your project root.
-4. Optional: paste the **base prompt** to load all 20 Swift skills at once. [Playlist](https://github.com/mvoshell652/playlist) can save that list as a single slash command.
+4. To load all 20 Swift skills at once, paste the **base prompt** first. It's optional, and [Playlist](https://github.com/mvoshell652/playlist) can save that list as one slash command.
 5. Copy an audit, paste it into the session, and let it run.
 
 To share one prompt, link to its ID, for example https://mvoshell652.github.io/swift-audit-prompts/#A-03.
 
 ## Skills you'll need
 
-The prompts call skills written by other people. This repo links to them and doesn't include them, and each keeps its own license.
+The prompts call skills by other authors. This repo links to them rather than copying them, and each keeps its own license.
 
 <!-- skills:start -->
 | Skill | Author | License | Used by |
 |---|---|---|---|
-| [swiftui-pro](https://github.com/twostraws/SwiftUI-Agent-Skill) | [@twostraws](https://github.com/twostraws) | MIT | base prompt, A-01 |
-| [swiftui-accessibility-auditor](https://github.com/rgmez/apple-accessibility-skills/tree/main/skills/swiftui-accessibility-auditor) | [@rgmez](https://github.com/rgmez) | MIT | base prompt, A-06 |
-| [swiftui-design-principles](https://github.com/arjitj2/swiftui-design-principles) | [@arjitj2](https://github.com/arjitj2) | MIT | base prompt, A-11 |
-| [swiftui-liquid-glass](https://github.com/Dimillian/Skills/tree/main/swiftui-liquid-glass) | [@Dimillian](https://github.com/Dimillian) | MIT | base prompt, A-08 |
-| [swiftui-performance-audit](https://github.com/Dimillian/Skills/tree/main/swiftui-performance-audit) | [@Dimillian](https://github.com/Dimillian) | MIT | base prompt, A-05 |
-| [swiftui-ui-patterns](https://github.com/Dimillian/Skills/tree/main/swiftui-ui-patterns) | [@Dimillian](https://github.com/Dimillian) | MIT | base prompt, A-09 |
-| [swiftui-view-refactor](https://github.com/Dimillian/Skills/tree/main/swiftui-view-refactor) | [@Dimillian](https://github.com/Dimillian) | MIT | base prompt, A-10 |
-| [swift-development](https://github.com/sammcj/agentic-coding/tree/main/Skills/swift-development) | [@sammcj](https://github.com/sammcj) | Apache-2.0 | base prompt |
-| [swift-api-design-guidelines-skill](https://github.com/Erikote04/Swift-API-Design-Guidelines-Agent-Skill) | [@Erikote04](https://github.com/Erikote04) | MIT | base prompt, A-12 |
-| [swift-format-style](https://github.com/n0an/Swift-FormatStyle-Agent-Skill) | [@n0an](https://github.com/n0an) | MIT | base prompt, A-13 |
-| [swift-concurrency](https://github.com/AvdLee/Swift-Concurrency-Agent-Skill) | [@AvdLee](https://github.com/AvdLee) | MIT | base prompt |
-| [swift-concurrency-expert](https://github.com/Dimillian/Skills/tree/main/swift-concurrency-expert) | [@Dimillian](https://github.com/Dimillian) | MIT | base prompt, A-02 |
-| [swift-concurrency-pro](https://github.com/twostraws/Swift-Concurrency-Agent-Skill) | [@twostraws](https://github.com/twostraws) | MIT | base prompt |
-| [swift-testing](https://github.com/bocato/swift-testing-agent-skill) | [@bocato](https://github.com/bocato) | MIT | base prompt |
-| [swift-testing-expert](https://github.com/AvdLee/Swift-Testing-Agent-Skill) | [@AvdLee](https://github.com/AvdLee) | MIT | base prompt, A-14 |
-| [swift-testing-pro](https://github.com/twostraws/Swift-Testing-Agent-Skill) | [@twostraws](https://github.com/twostraws) | MIT | base prompt |
-| [swift-accessibility-skill](https://github.com/PasqualeVittoriosi/swift-accessibility-skill) | [@PasqualeVittoriosi](https://github.com/PasqualeVittoriosi) | MIT | base prompt, A-16 |
-| [swift-architecture-skill](https://github.com/efremidze/swift-architecture-skill) | [@efremidze](https://github.com/efremidze) | MIT | base prompt, A-04 |
-| [swift-focusengine-pro](https://github.com/mhaviv/Swift-FocusEngine-Agent-Skill) | [@mhaviv](https://github.com/mhaviv) | MIT | base prompt, A-17 |
-| [swift-security-expert](https://github.com/ivan-magda/swift-security-skill) | [@ivan-magda](https://github.com/ivan-magda) | MIT | base prompt, A-03 |
-| [ios-accessibility](https://github.com/dadederk/iOS-Accessibility-Agent-Skill) | [@dadederk](https://github.com/dadederk) | MIT | A-07 |
-| [figma-to-swiftui](https://github.com/daetojemax/figma-to-swiftui-skill) | [@daetojemax](https://github.com/daetojemax) | no license file | A-15 |
-| [swiftdata-pro](https://github.com/twostraws/SwiftData-Agent-Skill) | [@twostraws](https://github.com/twostraws) | MIT | A-18 |
-| [writing-for-interfaces](https://github.com/andrewgleave/skills/tree/main/writing-for-interfaces) | [@andrewgleave](https://github.com/andrewgleave) | MIT | A-19 |
-| [ios-simulator-skill](https://github.com/conorluddy/ios-simulator-skill) | [@conorluddy](https://github.com/conorluddy) | MIT | A-20 |
-| [review-swarm](https://github.com/Dimillian/Skills/tree/main/review-swarm) | [@Dimillian](https://github.com/Dimillian) | MIT | A-21 |
-| [bug-hunt-swarm](https://github.com/Dimillian/Skills/tree/main/bug-hunt-swarm) | [@Dimillian](https://github.com/Dimillian) | MIT | A-22 |
+| [swiftui-pro](https://github.com/twostraws/SwiftUI-Agent-Skill) | [@twostraws](https://github.com/twostraws) | MIT | base prompt, A‑01 |
+| [swiftui-accessibility-auditor](https://github.com/rgmez/apple-accessibility-skills/tree/main/skills/swiftui-accessibility-auditor) | [@rgmez](https://github.com/rgmez) | MIT | base prompt, A‑06 |
+| [swiftui-design-principles](https://github.com/arjitj2/swiftui-design-principles) | [@arjitj2](https://github.com/arjitj2) | MIT | base prompt, A‑11 |
+| [swiftui-liquid-glass](https://github.com/Dimillian/Skills/tree/main/swiftui-liquid-glass) | [@Dimillian](https://github.com/Dimillian) | MIT | base prompt, A‑08 |
+| [swiftui-performance-audit](https://github.com/Dimillian/Skills/tree/main/swiftui-performance-audit) | [@Dimillian](https://github.com/Dimillian) | MIT | base prompt, A‑05 |
+| [swiftui-ui-patterns](https://github.com/Dimillian/Skills/tree/main/swiftui-ui-patterns) | [@Dimillian](https://github.com/Dimillian) | MIT | base prompt, A‑09 |
+| [swiftui-view-refactor](https://github.com/Dimillian/Skills/tree/main/swiftui-view-refactor) | [@Dimillian](https://github.com/Dimillian) | MIT | base prompt, A‑10 |
+| [swift-development](https://github.com/sammcj/agentic-coding/tree/main/Skills/swift-development) | [@sammcj](https://github.com/sammcj) | Apache-2.0 | base prompt |
+| [swift-api-design-guidelines-skill](https://github.com/Erikote04/Swift-API-Design-Guidelines-Agent-Skill) | [@Erikote04](https://github.com/Erikote04) | MIT | base prompt, A‑12 |
+| [swift-format-style](https://github.com/n0an/Swift-FormatStyle-Agent-Skill) | [@n0an](https://github.com/n0an) | MIT | base prompt, A‑13 |
+| [swift-concurrency](https://github.com/AvdLee/Swift-Concurrency-Agent-Skill) | [@AvdLee](https://github.com/AvdLee) | MIT | base prompt |
+| [swift-concurrency-expert](https://github.com/Dimillian/Skills/tree/main/swift-concurrency-expert) | [@Dimillian](https://github.com/Dimillian) | MIT | base prompt, A‑02 |
+| [swift-concurrency-pro](https://github.com/twostraws/Swift-Concurrency-Agent-Skill) | [@twostraws](https://github.com/twostraws) | MIT | base prompt |
+| [swift-testing](https://github.com/bocato/swift-testing-agent-skill) | [@bocato](https://github.com/bocato) | MIT | base prompt |
+| [swift-testing-expert](https://github.com/AvdLee/Swift-Testing-Agent-Skill) | [@AvdLee](https://github.com/AvdLee) | MIT | base prompt, A‑14 |
+| [swift-testing-pro](https://github.com/twostraws/Swift-Testing-Agent-Skill) | [@twostraws](https://github.com/twostraws) | MIT | base prompt |
+| [swift-accessibility-skill](https://github.com/PasqualeVittoriosi/swift-accessibility-skill) | [@PasqualeVittoriosi](https://github.com/PasqualeVittoriosi) | MIT | base prompt, A‑16 |
+| [swift-architecture-skill](https://github.com/efremidze/swift-architecture-skill) | [@efremidze](https://github.com/efremidze) | MIT | base prompt, A‑04 |
+| [swift-focusengine-pro](https://github.com/mhaviv/Swift-FocusEngine-Agent-Skill) | [@mhaviv](https://github.com/mhaviv) | MIT | base prompt, A‑17 |
+| [swift-security-expert](https://github.com/ivan-magda/swift-security-skill) | [@ivan-magda](https://github.com/ivan-magda) | MIT | base prompt, A‑03 |
+| [ios-accessibility](https://github.com/dadederk/iOS-Accessibility-Agent-Skill) | [@dadederk](https://github.com/dadederk) | MIT | A‑07 |
+| [figma-to-swiftui](https://github.com/daetojemax/figma-to-swiftui-skill) | [@daetojemax](https://github.com/daetojemax) | no license file | A‑15 |
+| [swiftdata-pro](https://github.com/twostraws/SwiftData-Agent-Skill) | [@twostraws](https://github.com/twostraws) | MIT | A‑18 |
+| [writing-for-interfaces](https://github.com/andrewgleave/skills/tree/main/writing-for-interfaces) | [@andrewgleave](https://github.com/andrewgleave) | MIT | A‑19 |
+| [ios-simulator-skill](https://github.com/conorluddy/ios-simulator-skill) | [@conorluddy](https://github.com/conorluddy) | MIT | A‑20 |
+| [review-swarm](https://github.com/Dimillian/Skills/tree/main/review-swarm) | [@Dimillian](https://github.com/Dimillian) | MIT | A‑21 |
+| [bug-hunt-swarm](https://github.com/Dimillian/Skills/tree/main/bug-hunt-swarm) | [@Dimillian](https://github.com/Dimillian) | MIT | A‑22 |
 <!-- skills:end -->
 
 `swift-development` was called `swift-best-practices` before upstream renamed it. `figma-to-swiftui` has no license file, so install it from its own repo.

@@ -20,7 +20,7 @@ node scripts/check.mjs
 
 ## Where things live
 
-- **Prompts** are the `PROMPTS` array in `index.html`. Each audit has an ID (`A-01` onwards, in order), a wave, a size (`tier`), a time estimate, a title that starts with its slash command, and the prompt text.
+- **Prompts** are the `PROMPTS` array in `index.html`. Each audit has an ID (`A-01` onwards, in order), a wave, a size (`tier`), a time estimate, a title that says what it checks, and the prompt text. The prompt's first line is its slash command, and the page shows it under the title.
 - **Skills** are `SKILLS`, split into the ones the base prompt loads and the ones a single audit uses, and `SKILL_SOURCES`, which gives each skill's upstream repo, author and license.
 - **Project fields** are `FIELDS`. A prompt uses them as `{{APP_NAME}}`, `{{APP_PATH}}`, `{{IOS}}`, `{{SWIFT}}`, `{{BACKEND}}` and `{{FIGMA_FILE}}`.
 - **Generated parts.** The README's two tables and the Content Security Policy hashes in `index.html` come from the page itself. After any change to `index.html`, run `node scripts/check.mjs --write` and commit what it updates. If you skip it, the browser blocks the page's own script and CI fails.
@@ -36,6 +36,26 @@ node scripts/check.mjs
 - **Credit the original author.** A new skill needs a `SKILL_SOURCES` entry that links the author's own repo, not a collection that re-hosts it, with the license that repo states.
 - **Try it.** Run a changed prompt in Claude Code on a real project, and say in the pull request what it found.
 - **No network requests.** The page loads nothing from other sites. Its Content Security Policy blocks any request that tries, and the check flags the common ways of making one.
+
+## Writing style
+
+The page and docs sound **plain, practical, precise and generous**: everyday words, a next step wherever one helps, exact names and counts, and credit for the people whose skills do the work. When these pull against each other, clarity wins.
+
+- **Titles and headings use sentence case** and say what something checks or does. Write words out: no em dashes, `&`, `+`, `/` or `vs.` in titles. The check enforces this for audit and wave titles.
+- **Say what happens next.** A message after an action names the next step, like "Copied A-03. Paste it into Claude Code."
+- **Name things the same way everywhere:**
+
+| Use | Not | Meaning |
+|---|---|---|
+| audit | test, check | One of the prompts A-01 to A-22 |
+| prompt | template | The text you copy into Claude Code |
+| base prompt | preamble | The prompt that loads all 20 Swift skills |
+| skill | plugin | A Claude Code agent skill, written by its own author |
+| Your project, project details | settings, config | The fields that fill in the prompts |
+| done | complete, reviewed | An audit whose findings you've triaged |
+| triage | review (for findings) | Decide what to fix now, later or not at all |
+
+The prompt text itself is written for Claude, not for people reading the page, so these rules apply to titles, buttons, messages and docs rather than to what's inside a prompt.
 
 ## Pull requests
 

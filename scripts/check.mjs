@@ -72,8 +72,12 @@ audits.forEach((p, i) => {
   if (!skill) {
     fail(`${p.id} must start with its /skill command on a line of its own`);
   } else {
-    if (!(p.title || "").startsWith(`/${skill} — `)) fail(`${p.id}'s title should start with "/${skill} — "`);
+    if ((p.title || "").startsWith("/")) fail(`${p.id}'s title should describe what it checks; the page shows /${skill} next to it`);
     if (!allSkills.includes(skill)) fail(`${p.id} runs /${skill}, which is not listed in SKILLS`);
+  }
+  // Interface copy style (CONTRIBUTING.md, "Writing style"): no dashes or shorthand in titles.
+  for (const [label, text] of [["title", p.title || ""], ["wave title", p.waveTitle || ""]]) {
+    if (/[—–]|&|\+| \/ |\bvs\.|a11y/.test(text)) fail(`${p.id}'s ${label} "${text}" uses a dash or shorthand; write it out in words`);
   }
   const prev = audits[i - 1];
   if (prev && p.wave < prev.wave) fail(`${p.id} is in wave ${p.wave} but comes after wave ${prev.wave}`);
@@ -149,19 +153,26 @@ for (const [text, pattern, what] of loaders) {
 }
 
 // ---- README tables, generated from the page
-const capitalize = s => (s.startsWith("iOS") ? s : s.charAt(0).toUpperCase() + s.slice(1));
+// IDs use a non-breaking hyphen (U+2011) so a narrow column can't split "A-01" across two lines.
+const unbreakable = id => id.replace(/-/g, "\u2011");
+const readableTime = t => {
+  const m = /^~(\d+)([hd])$/.exec(t);
+  if (!m) return t;
+  const n = Number(m[1]);
+  return m[2] === "d" ? (n === 1 ? "1\u00a0day" : `${n}\u00a0days`) : `${n}\u00a0hours`;
+};
 const promptRows = audits.map(p => {
-  const [skill, what] = p.title.split(" — ");
-  return `| [${p.id}](${PAGE_URL}#${p.id}) | ${p.tier} | \`${skill}\` | ${capitalize(what || "")} |`;
+  const skill = (p.content.match(/^\/([a-z0-9-]+)\n/) || [])[1];
+  return `| [${unbreakable(p.id)}](${PAGE_URL}#${p.id}) | ${p.title} | \`/${skill}\` | ${readableTime(p.time)} |`;
 });
 const skillRows = allSkills.filter(name => SKILL_SOURCES[name]).map(name => {
   const src = SKILL_SOURCES[name];
-  const usedBy = audits.filter(p => p.content.startsWith(`/${name}\n`)).map(p => p.id);
-  if (SKILLS.base.includes(name)) usedBy.unshift("base prompt");
+  const usedBy = audits.filter(p => p.content.startsWith(`/${name}\n`)).map(p => unbreakable(p.id));
+  if (SKILLS.base.includes(name)) usedBy.unshift("base\u00a0prompt");
   return `| [${name}](${src.url}) | [${src.author}](https://github.com/${src.author.slice(1)}) | ${src.license} | ${usedBy.join(", ") || "—"} |`;
 });
 const tables = {
-  prompts: ["| ID | Size | Skill | What it checks |", "|---|---|---|---|", ...promptRows].join("\n"),
+  prompts: ["| ID | What it checks | Skill | Time |", "|---|---|---|---|", ...promptRows].join("\n"),
   skills: ["| Skill | Author | License | Used by |", "|---|---|---|---|", ...skillRows].join("\n"),
 };
 for (const [name, table] of Object.entries(tables)) {

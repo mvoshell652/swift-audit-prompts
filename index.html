@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Z4n6+ScvLsxEMkH0JuU68Eii66W6ja6n0eQtE3TH/pk='; style-src 'sha256-Tlx2GwPNoAj7FR+cV7aJnWzHwjJOGtxJhkpaPAW5LWk='; img-src data:; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-TearUZNVc/fvZtA+zm34fYS1NU8/ygp72cMkxRRKDCw='; style-src 'sha256-UoamI4H9taiPZEJZP9DT1EAPaN2DHpfxfalPlUuGS74='; img-src data:; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Swift Audit Prompts</title>
 <meta name="description" content="22 copy-paste audit prompts for Swift and SwiftUI apps, built for Claude Code and Swift agent skills.">
@@ -333,6 +333,19 @@
     min-width: 0;
     margin: 0;
   }
+  .prompt-label {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .prompt-skill {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+    font-size: 12px;
+    color: var(--muted);
+    overflow-wrap: anywhere;
+  }
   .prompt-card.done .prompt-title {
     text-decoration: line-through;
     color: var(--muted);
@@ -503,8 +516,8 @@
   <div class="header-row">
     <h1>Swift Audit Prompts</h1>
     <div class="progress-meter">
-      <div class="progress-bar" id="progressBar" role="progressbar" aria-label="Audits reviewed" aria-valuemin="0" aria-valuemax="22" aria-valuenow="0"><div id="progressFill" class="progress-fill"></div></div>
-      <span class="progress-text"><span id="completedCount">0</span> / <span id="totalCount">22</span> reviewed</span>
+      <div class="progress-bar" id="progressBar" role="progressbar" aria-label="Audits done" aria-valuemin="0" aria-valuemax="22" aria-valuenow="0"><div id="progressFill" class="progress-fill"></div></div>
+      <span class="progress-text"><span id="completedCount">0</span> of <span id="totalCount">22</span> done</span>
     </div>
     <div class="header-actions">
       <div class="filter-group" role="group" aria-label="Filter prompts">
@@ -512,7 +525,7 @@
         <button type="button" class="filter-btn" data-filter="todo" aria-pressed="false">To do</button>
         <button type="button" class="filter-btn" data-filter="done" aria-pressed="false">Done</button>
       </div>
-      <button type="button" class="reset-btn" id="resetAll">Reset</button>
+      <button type="button" class="reset-btn" id="resetAll">Reset progress</button>
     </div>
   </div>
 </header>
@@ -522,7 +535,7 @@
     <div class="project-head">
       <h2 id="projectTitle">Your project</h2>
       <p class="hint">Fills in every prompt below. Saved only in this browser.</p>
-      <button type="button" class="link-btn" id="clearProject">Clear</button>
+      <button type="button" class="link-btn" id="clearProject">Clear fields</button>
     </div>
     <div class="field-grid" id="fieldGrid"></div>
   </section>
@@ -545,7 +558,7 @@ const FIELDS = [
   { key: "IOS", label: "iOS deployment target", placeholder: "26", fallback: "26" },
   { key: "SWIFT", label: "Swift version", placeholder: "6.2", fallback: "6.2" },
   { key: "BACKEND", label: "Backend (optional)", placeholder: "e.g. Supabase, Firebase, CloudKit", optional: true },
-  { key: "FIGMA_FILE", label: "Figma file URL (optional, A-15)", placeholder: "https://www.figma.com/design/…", optional: true },
+  { key: "FIGMA_FILE", label: "Figma file URL (optional, for A-15)", placeholder: "https://www.figma.com/design/…", optional: true },
 ];
 const FIELD_BY_KEY = Object.fromEntries(FIELDS.map(f => [f.key, f]));
 
@@ -602,20 +615,19 @@ const HOW_TO_HTML = `
   <li>Open a fresh Claude Code session in your project root.</li>
   <li>Optional: paste the <strong>base prompt</strong> first to load all 20 Swift skills at once. <a href="https://github.com/mvoshell652/playlist">Playlist</a> can save that list as a single slash command.</li>
   <li>Click <strong>Copy</strong> on an audit, paste it into the session, and let it run.</li>
-  <li>Tick the box once you've triaged the findings. Progress stays in this browser.</li>
+  <li>Tick the box once you've triaged the findings. Your progress stays in this browser.</li>
 </ol>
 <h3>Run order</h3>
 <ul>
   <li>A-01 sets the baseline. Run it first.</li>
   <li>A-02 to A-04 cover foundational correctness. Fix the critical findings before going further.</li>
-  <li>A-05 to A-11 are deep dives into performance, accessibility, modernization and UI.</li>
+  <li>A-05 to A-11 dig into performance, accessibility, modernization and UI.</li>
   <li>A-12 to A-14 cover code quality, style and test coverage.</li>
-  <li>A-15 is a Figma-versus-code coverage report.</li>
-  <li>A-16 to A-20 go deeper on accessibility, focus, persistence, copy and runtime QA.</li>
-  <li>A-21 and A-22 are cross-cutting multi-agent passes, best saved for a final sweep.</li>
+  <li>A-15 to A-20 are specialist audits: Figma coverage, Accessibility Inspector, focus, offline caching, copy and a simulator runbook.</li>
+  <li>A-21 and A-22 run several agents across the whole codebase. Save them for last.</li>
 </ul>
 <h3>Time estimates</h3>
-<p>Rough time to run an audit and triage what it finds: S about 2 hours, M about 3, L about 4, XL about a day.</p>
+<p>Each card shows a rough time to run the audit and triage what it finds. The colored badge gives the same size at a glance: S is about 2 hours, M about 3, L about 4 and XL about a day.</p>
 <h3>Skills left out on purpose</h3>
 <ul>
   <li>swift-concurrency, swift-concurrency-pro, swift-testing and swift-testing-pro have no audit of their own. The -expert audits cover that ground, and the base prompt still loads them.</li>
@@ -679,8 +691,8 @@ After loading, give a one-line confirmation per skill and wait for instructions.
 If a Figma link is provided, use the Figma MCP or REST API to pull node data, but don't take it literally: understand the intent and build with current SwiftUI defaults, because Figma components often lag behind the latest SwiftUI changes.`
   },
   {
-    id: "A-01", wave: 1, waveTitle: "Wave 1 — Baseline", tier: "XL", time: "~1d",
-    title: "/swiftui-pro — flagship SwiftUI quality audit",
+    id: "A-01", wave: 1, waveTitle: "Baseline", tier: "XL", time: "~1d",
+    title: "SwiftUI quality baseline",
     content: `/swiftui-pro
 
 Perform a comprehensive SwiftUI quality audit of {{APP_NAME}}, cross-referenced against the full swiftui-pro knowledge base.
@@ -728,8 +740,8 @@ Output sections:
 - ✅ Priority Summary (High / Medium / Low)`
   },
   {
-    id: "A-02", wave: 2, waveTitle: "Wave 2 — Foundational correctness", tier: "L", time: "~4h",
-    title: "/swift-concurrency-expert — Swift strict concurrency",
+    id: "A-02", wave: 2, waveTitle: "Foundational correctness", tier: "L", time: "~4h",
+    title: "Strict concurrency and data races",
     content: `/swift-concurrency-expert
 
 Audit {{APP_NAME}} for Swift {{SWIFT}} strict concurrency correctness.
@@ -752,8 +764,8 @@ Group findings: Data Race Risk / Incorrect Isolation / Antipattern / Sendable Ga
 End with a High/Medium/Low priority summary.`
   },
   {
-    id: "A-03", wave: 2, waveTitle: "Wave 2 — Foundational correctness", tier: "L", time: "~4h",
-    title: "/swift-security-expert — auth, secrets, app extensions",
+    id: "A-03", wave: 2, waveTitle: "Foundational correctness", tier: "L", time: "~4h",
+    title: "Auth, secrets and app extensions",
     content: `/swift-security-expert
 
 Perform a full security audit of {{APP_NAME}}.
@@ -778,8 +790,8 @@ For each finding: file + line, severity (Critical / High / Medium / Low), and re
 End with a ranked remediation list.`
   },
   {
-    id: "A-04", wave: 2, waveTitle: "Wave 2 — Foundational correctness", tier: "L", time: "~4h",
-    title: "/swift-architecture-skill — boundaries & dependency injection",
+    id: "A-04", wave: 2, waveTitle: "Foundational correctness", tier: "L", time: "~4h",
+    title: "Architecture boundaries and dependency injection",
     content: `/swift-architecture-skill
 
 Audit the architecture of {{APP_NAME}} for structural and design quality issues.
@@ -804,8 +816,8 @@ For each finding: file + line, the violation, and a recommended fix with code.
 End with an architectural debt summary (top 5 issues).`
   },
   {
-    id: "A-05", wave: 3, waveTitle: "Wave 3 — Performance & accessibility", tier: "M", time: "~3h",
-    title: "/swiftui-performance-audit — rendering performance",
+    id: "A-05", wave: 3, waveTitle: "Performance and accessibility", tier: "M", time: "~3h",
+    title: "Rendering performance",
     content: `/swiftui-performance-audit
 
 Audit {{APP_NAME}} for SwiftUI rendering and performance issues.
@@ -828,8 +840,8 @@ For each issue: file + line, what triggers unnecessary work, and the fix.
 Group by impact: Frame-Drop Risk / Excess Re-renders / Startup Cost.`
   },
   {
-    id: "A-06", wave: 3, waveTitle: "Wave 3 — Performance & accessibility", tier: "M", time: "~3h",
-    title: "/swiftui-accessibility-auditor — SwiftUI a11y modifiers",
+    id: "A-06", wave: 3, waveTitle: "Performance and accessibility", tier: "M", time: "~3h",
+    title: "SwiftUI accessibility modifiers",
     content: `/swiftui-accessibility-auditor
 
 Perform a full SwiftUI accessibility audit of {{APP_NAME}}.
@@ -853,8 +865,8 @@ Audit the most-used screens first (root tabs, profile, settings, sign-in, onboar
 Report: file + line, issue type, severity (blocker / serious / minor), and corrected modifier code.`
   },
   {
-    id: "A-07", wave: 3, waveTitle: "Wave 3 — Performance & accessibility", tier: "M", time: "~3h",
-    title: "/ios-accessibility — experiential a11y (VoiceOver, Reduce Motion, keyboard)",
+    id: "A-07", wave: 3, waveTitle: "Performance and accessibility", tier: "M", time: "~3h",
+    title: "VoiceOver, keyboard and other assistive tech",
     content: `/ios-accessibility
 
 Perform a comprehensive experiential iOS accessibility audit of {{APP_NAME}}.
@@ -878,8 +890,8 @@ Report by screen: file, issue, impact (blocks use / degrades use / minor), fix.
 End with an App Store–readiness verdict on accessibility.`
   },
   {
-    id: "A-08", wave: 4, waveTitle: "Wave 4 — Modernization & UI quality", tier: "M", time: "~3h",
-    title: "/swiftui-liquid-glass — iOS 26 modernization opportunities",
+    id: "A-08", wave: 4, waveTitle: "Modernization and UI quality", tier: "M", time: "~3h",
+    title: "Liquid Glass and iOS 26 APIs",
     content: `/swiftui-liquid-glass
 
 Audit {{APP_NAME}} for Liquid Glass and other iOS 26 SwiftUI API opportunities.
@@ -903,8 +915,8 @@ For each opportunity: file + line, current code, iOS 26 replacement with code sn
 End with a modernization priority list (High-value / Medium / Polish).`
   },
   {
-    id: "A-09", wave: 4, waveTitle: "Wave 4 — Modernization & UI quality", tier: "M", time: "~3h",
-    title: "/swiftui-ui-patterns — pattern consistency across screens",
+    id: "A-09", wave: 4, waveTitle: "Modernization and UI quality", tier: "M", time: "~3h",
+    title: "Consistent UI patterns across screens",
     content: `/swiftui-ui-patterns
 
 Audit {{APP_NAME}} for SwiftUI UI pattern consistency and best practices.
@@ -927,8 +939,8 @@ Report: pattern name, files affected, what's inconsistent, recommended unified p
 End with a "design system gap" list of missing shared components.`
   },
   {
-    id: "A-10", wave: 4, waveTitle: "Wave 4 — Modernization & UI quality", tier: "M", time: "~3h",
-    title: "/swiftui-view-refactor — view decomposition opportunities",
+    id: "A-10", wave: 4, waveTitle: "Modernization and UI quality", tier: "M", time: "~3h",
+    title: "Oversized views to break up",
     content: `/swiftui-view-refactor
 
 Audit {{APP_NAME}}'s SwiftUI views for decomposition and composition quality.
@@ -951,8 +963,8 @@ Report: file + line, current line count, what to extract, and a sketch of the re
 End with a top-10 list of highest-ROI refactors.`
   },
   {
-    id: "A-11", wave: 4, waveTitle: "Wave 4 — Modernization & UI quality", tier: "M", time: "~3h",
-    title: "/swiftui-design-principles — design system & token fidelity",
+    id: "A-11", wave: 4, waveTitle: "Modernization and UI quality", tier: "M", time: "~3h",
+    title: "Design tokens and visual consistency",
     content: `/swiftui-design-principles
 
 Audit {{APP_NAME}}'s design system implementation for consistency and token fidelity.
@@ -978,8 +990,8 @@ Format findings as: file + line, current hardcoded value, correct token referenc
 End with a list of missing tokens to add.`
   },
   {
-    id: "A-12", wave: 5, waveTitle: "Wave 5 — Code quality & testing", tier: "S", time: "~2h",
-    title: "/swift-api-design-guidelines-skill — Swift API surface review",
+    id: "A-12", wave: 5, waveTitle: "Code quality and testing", tier: "S", time: "~2h",
+    title: "API naming and design",
     content: `/swift-api-design-guidelines-skill
 
 Audit {{APP_NAME}}'s Swift API surface against the Swift API Design Guidelines.
@@ -1002,8 +1014,8 @@ Report: file + line, current name, recommended name, rule violated.
 End with a rename priority list (public API > internal > private).`
   },
   {
-    id: "A-13", wave: 5, waveTitle: "Wave 5 — Code quality & testing", tier: "S", time: "~2h",
-    title: "/swift-format-style — style, hygiene & FormatStyle sweep",
+    id: "A-13", wave: 5, waveTitle: "Code quality and testing", tier: "S", time: "~2h",
+    title: "Code hygiene and value formatting",
     content: `/swift-format-style
 
 Audit {{APP_NAME}} for Swift code style, hygiene, and value-formatting issues.
@@ -1030,8 +1042,8 @@ Report: file + line, issue type, suggested fix. Group by issue type for easy tri
 End with a "quick wins" list (auto-fixable) and a "needs judgment" list.`
   },
   {
-    id: "A-14", wave: 5, waveTitle: "Wave 5 — Code quality & testing", tier: "L", time: "~4h",
-    title: "/swift-testing-expert — test coverage plan",
+    id: "A-14", wave: 5, waveTitle: "Code quality and testing", tier: "L", time: "~4h",
+    title: "Test coverage plan",
     content: `/swift-testing-expert
 
 Audit {{APP_NAME}} for test coverage gaps and testing quality.
@@ -1055,8 +1067,8 @@ Deliverables:
 - Use Swift Testing (@Test, #expect) for new unit tests when the toolchain is Swift 6 or later, otherwise XCTest; UI tests stay on XCTest`
   },
   {
-    id: "A-15", wave: 6, waveTitle: "Wave 6 — Coverage & deeper swings", tier: "M", time: "~3h",
-    title: "/figma-to-swiftui — Figma vs. code coverage gap report",
+    id: "A-15", wave: 6, waveTitle: "Specialist audits", tier: "M", time: "~3h",
+    title: "Figma designs missing from the code",
     content: `/figma-to-swiftui
 
 Use the Figma MCP to do a coverage audit — NOT a code conversion.
@@ -1082,8 +1094,8 @@ Do NOT generate any SwiftUI code. This is a gap report only.
 End with a top-10 list of highest-priority screens to build or finish.`
   },
   {
-    id: "A-16", wave: 6, waveTitle: "Wave 6 — Coverage & deeper swings", tier: "S", time: "~2h",
-    title: "/swift-accessibility-skill — Accessibility Inspector audit",
+    id: "A-16", wave: 6, waveTitle: "Specialist audits", tier: "S", time: "~2h",
+    title: "Accessibility Inspector checks",
     content: `/swift-accessibility-skill
 
 Audit {{APP_NAME}} against what the iOS Accessibility Inspector and other platform tooling will flag.
@@ -1106,8 +1118,8 @@ Audit:
 Deliverable: a checklist a tester can run through in Accessibility Inspector, plus a code-level fix list.`
   },
   {
-    id: "A-17", wave: 6, waveTitle: "Wave 6 — Coverage & deeper swings", tier: "S", time: "~2h",
-    title: "/swift-focusengine-pro — @FocusState + keyboard navigation",
+    id: "A-17", wave: 6, waveTitle: "Specialist audits", tier: "S", time: "~2h",
+    title: "Focus and keyboard navigation",
     content: `/swift-focusengine-pro
 
 Audit {{APP_NAME}} for @FocusState and keyboard navigation correctness.
@@ -1129,8 +1141,8 @@ Report: file + line, missing/incorrect focus behavior, corrected code.
 End with a list of Command shortcuts to add for power users.`
   },
   {
-    id: "A-18", wave: 6, waveTitle: "Wave 6 — Coverage & deeper swings", tier: "M", time: "~3h",
-    title: "/swiftdata-pro — local persistence / offline cache evaluation",
+    id: "A-18", wave: 6, waveTitle: "Specialist audits", tier: "M", time: "~3h",
+    title: "Offline caching with SwiftData",
     content: `/swiftdata-pro
 
 Evaluate whether {{APP_NAME}} should adopt SwiftData for local persistence and offline caching.
@@ -1151,8 +1163,8 @@ This is an evaluation, not a migration. Answer:
 Deliverable: a recommendation (adopt now / adopt later / don't adopt) with reasoning, plus a sketch schema if recommended.`
   },
   {
-    id: "A-19", wave: 6, waveTitle: "Wave 6 — Coverage & deeper swings", tier: "M", time: "~3h",
-    title: "/writing-for-interfaces — UI copy + microcopy audit",
+    id: "A-19", wave: 6, waveTitle: "Specialist audits", tier: "M", time: "~3h",
+    title: "Interface copy and tone",
     content: `/writing-for-interfaces
 
 Audit {{APP_NAME}} for UI copy quality, tone consistency, and microcopy gaps.
@@ -1175,8 +1187,8 @@ Report: file + line, current copy, recommended copy, reason.
 End with a tone-of-voice summary the team can codify going forward.`
   },
   {
-    id: "A-20", wave: 6, waveTitle: "Wave 6 — Coverage & deeper swings", tier: "M", time: "~3h",
-    title: "/ios-simulator-skill — runtime smoke test runbook",
+    id: "A-20", wave: 6, waveTitle: "Specialist audits", tier: "M", time: "~3h",
+    title: "Simulator smoke test runbook",
     content: `/ios-simulator-skill
 
 Build a runtime smoke test plan for {{APP_NAME}} using the iOS Simulator.
@@ -1199,8 +1211,8 @@ This is a manual + automated smoke test plan, not code generation. Deliver:
 Deliverable: a numbered runbook a QA tester can execute in under 60 minutes per build.`
   },
   {
-    id: "A-21", wave: 7, waveTitle: "Wave 7 — Cross-cutting passes", tier: "XL", time: "~1d",
-    title: "/review-swarm — multi-agent parallel code review",
+    id: "A-21", wave: 7, waveTitle: "Multi-agent reviews", tier: "XL", time: "~1d",
+    title: "Multi-agent code review",
     content: `/review-swarm
 
 Orchestrate a parallel code review of {{APP_NAME}} across multiple specialized lenses.
@@ -1231,8 +1243,8 @@ Output:
 - ⚖️ Contested (reviewers disagreed — needs a human call)`
   },
   {
-    id: "A-22", wave: 7, waveTitle: "Wave 7 — Cross-cutting passes", tier: "L", time: "~4h",
-    title: "/bug-hunt-swarm — focused bug hunt across the codebase",
+    id: "A-22", wave: 7, waveTitle: "Multi-agent reviews", tier: "L", time: "~4h",
+    title: "Bug hunt across the codebase",
     content: `/bug-hunt-swarm
 
 Run a focused bug hunt on {{APP_NAME}}.
@@ -1334,14 +1346,29 @@ function renderFields() {
     </label>`).join("");
 }
 
+// The slash command on a prompt's first line, e.g. "swiftui-pro".
+function skillOf(p) {
+  return p.kind ? null : ((p.content || "").match(/^\/([a-z0-9-]+)\n/) || [])[1] || null;
+}
+
+// "~4h" reads as "tilde 4 h" to a screen reader, so say it in words.
+function spokenTime(t) {
+  const m = /^~(\d+)([hd])$/.exec(t);
+  if (!m) return t;
+  const n = Number(m[1]);
+  if (m[2] === "d") return n === 1 ? "about a day" : `about ${n} days`;
+  return n === 1 ? "about an hour" : `about ${n} hours`;
+}
+
 function renderHead(p, { checkable, copyLabel }) {
   const expanded = isExpanded(p.id);
   const done = !!state.done[p.id];
   const check = checkable
-    ? `<button type="button" class="check" role="checkbox" aria-checked="${done}" aria-label="Mark ${escapeHtml(p.id)} reviewed" data-id="${escapeHtml(p.id)}" data-focus="check:${escapeHtml(p.id)}"></button>`
+    ? `<button type="button" class="check" role="checkbox" aria-checked="${done}" aria-label="Mark ${escapeHtml(p.id)} done" data-id="${escapeHtml(p.id)}" data-focus="check:${escapeHtml(p.id)}"></button>`
     : "";
   const tier = p.tier ? `<span class="tier-badge tier-${p.tier.toLowerCase()}"><span class="visually-hidden">Size </span>${escapeHtml(p.tier)}</span>` : "";
-  const time = p.time ? `<span class="prompt-time"><span class="visually-hidden">Estimated time </span>${escapeHtml(p.time)}</span>` : "";
+  const time = p.time ? `<span class="prompt-time"><span aria-hidden="true">${escapeHtml(p.time)}</span><span class="visually-hidden">${escapeHtml(spokenTime(p.time))}</span></span>` : "";
+  const skill = skillOf(p);
   const copy = copyLabel
     ? `<button type="button" class="copy-btn" data-id="${escapeHtml(p.id)}" data-focus="copy:${escapeHtml(p.id)}" aria-label="${escapeHtml(p.kind ? copyLabel : `${copyLabel} ${p.id}`)}"><span aria-hidden="true">📋 </span><span class="label">${escapeHtml(copyLabel)}</span></button>`
     : "";
@@ -1351,12 +1378,15 @@ function renderHead(p, { checkable, copyLabel }) {
         <div class="prompt-meta">
           <span class="prompt-code">${escapeHtml(p.code || p.id)}</span>
           ${tier}
-          <${p.kind ? "h2" : "h3"} class="prompt-title">${escapeHtml(p.title)}</${p.kind ? "h2" : "h3"}>
+          <div class="prompt-label">
+            <${p.kind ? "h2" : "h3"} class="prompt-title">${escapeHtml(p.title)}</${p.kind ? "h2" : "h3"}>
+            ${skill ? `<code class="prompt-skill">/${escapeHtml(skill)}</code>` : ""}
+          </div>
           ${time}
         </div>
         <div class="prompt-actions">
           ${copy}
-          <button type="button" class="toggle-btn" data-id="${escapeHtml(p.id)}" data-focus="toggle:${escapeHtml(p.id)}" aria-expanded="${expanded}" aria-controls="body-${escapeHtml(p.id)}" aria-label="${escapeHtml(p.kind ? p.title : `Prompt ${p.id} details`)}"><span aria-hidden="true">▼</span></button>
+          <button type="button" class="toggle-btn" data-id="${escapeHtml(p.id)}" data-focus="toggle:${escapeHtml(p.id)}" aria-expanded="${expanded}" aria-controls="body-${escapeHtml(p.id)}" aria-label="${escapeHtml(p.kind ? p.title : `Prompt text for ${p.id}`)}"><span aria-hidden="true">▼</span></button>
         </div>
       </div>`;
 }
@@ -1391,7 +1421,7 @@ function skillsCard() {
     code: "SKILLS",
     title: "Skills these prompts use",
     html: `
-<p>Install the skills you plan to run with whatever you use to manage skills, or copy each one into <code>~/.claude/skills/</code>. Every skill belongs to its author and keeps its own license. swift-development was called swift-best-practices before upstream renamed it.</p>
+<p>Each audit needs its skill installed. Use your usual skill manager, or copy each skill's folder into <code>~/.claude/skills/</code>. Every skill belongs to its author and keeps its own license. swift-development was called swift-best-practices before upstream renamed it.</p>
 <h3>Loaded by the base prompt (${SKILLS.base.length})</h3>
 <ul class="skill-list">${SKILLS.base.map(renderSkillItem).join("")}</ul>
 <h3>Used by a single audit (${SKILLS.extra.length})</h3>
@@ -1422,12 +1452,15 @@ function render() {
       currentWave = p.waveTitle;
       const waveItems = audits.filter(x => x.waveTitle === p.waveTitle);
       const waveDone = waveItems.filter(x => state.done[x.id]).length;
-      html += `<section class="wave-section"><div class="wave-header"><h2 class="wave-title">${escapeHtml(p.waveTitle)}</h2><span class="wave-meta">${waveDone} / ${waveItems.length} done</span></div><div class="wave-items">`;
+      html += `<section class="wave-section"><div class="wave-header"><h2 class="wave-title">Wave ${escapeHtml(String(p.wave))}: ${escapeHtml(p.waveTitle)}</h2><span class="wave-meta">${waveDone} of ${waveItems.length} done</span></div><div class="wave-items">`;
     }
     html += renderCard(p);
   });
   if (currentWave !== null) html += `</div></section>`;
-  if (visible.length === 0) html += `<div class="empty-state">No prompts match this filter.</div>`;
+  const emptyMessage = state.filter === "todo"
+    ? `All ${audits.length} audits are done.`
+    : "Nothing ticked yet. Tick an audit once you've triaged its findings.";
+  if (visible.length === 0) html += `<div class="empty-state">${escapeHtml(emptyMessage)}</div>`;
 
   container.innerHTML = html;
   if (focusKey) {
@@ -1442,7 +1475,7 @@ function render() {
     (target || container).focus();
   }
   const status = document.getElementById("listStatus");
-  const message = visible.length ? `Showing ${visible.length} of ${audits.length} audits` : "No audits match this filter";
+  const message = visible.length ? `Showing ${visible.length} of ${audits.length} audits` : emptyMessage;
   if (status.textContent !== message) status.textContent = message;
   updateProgress(audits);
 }
@@ -1488,16 +1521,17 @@ async function copyText(text) {
 async function copyPrompt(btn) {
   const prompt = PROMPTS.find(p => p.id === btn.dataset.id);
   if (!prompt || !prompt.content) return;
+  const name = prompt.kind ? "the base prompt" : prompt.id;
   const ok = await copyText(fill(prompt.content, "text"));
   if (!ok) {
-    showToast("Copy failed. Expand the prompt and select it by hand.");
+    showToast(`Couldn't copy ${name}. Open the prompt and select its text instead.`);
     return;
   }
   const label = btn.querySelector(".label");
   const original = label.textContent;
   btn.classList.add("copied");
   label.textContent = "Copied";
-  showToast(`${prompt.code || prompt.id} copied to clipboard`);
+  showToast(`Copied ${name}. Paste it into Claude Code.`);
   setTimeout(() => {
     btn.classList.remove("copied");
     label.textContent = original;
@@ -1565,7 +1599,7 @@ document.querySelectorAll(".filter-btn").forEach(btn => {
 });
 
 document.getElementById("resetAll").addEventListener("click", () => {
-  if (confirm("Reset all checkmarks and expanded cards? Your project details and the prompts stay as they are.")) {
+  if (confirm("Clear your progress? This unticks every audit and closes every open card. Your project details stay.")) {
     state = { done: {}, expanded: {}, filter: state.filter };
     saveState();
     render();
