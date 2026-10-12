@@ -1,0 +1,16 @@
+name: Idea for an audit or a change
+description: A new audit, a sharper check, or a change to the page
+labels: [enhancement]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help
+      description: The problem you want an audit to catch, or what you would change. For a new audit, say which skill it would run.
+    validations:
+      required: true
+  - type: textarea
+    id: example
+    attributes:
+      label: Example
+      description: Optional. A finding you would expect it to report, or a draft of the prompt.
