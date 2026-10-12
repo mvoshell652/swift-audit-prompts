@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Swift Audit Prompts</title>
+<meta name="description" content="22 copy-paste audit prompts for Swift and SwiftUI apps, built for Claude Code and Swift agent skills.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Swift Audit Prompts">
+<meta property="og:description" content="22 copy-paste audit prompts for Swift and SwiftUI apps, built for Claude Code and Swift agent skills.">
+<meta property="og:url" content="https://mvoshell652.github.io/swift-audit-prompts/">
+<meta name="theme-color" content="#f6f7f9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0c0e12" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23f05138'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11.5' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f6f7f9;
+    --card: #ffffff;
+    --border: #e2e5ea;
+    --text: #14171c;
+    --muted: #5b6472;
+    --accent-text: #0060df;
+    --accent-bg: #e8f1ff;
+    --accent-fill: #0060df;
+    --on-accent: #ffffff;
+    --done-bg: #f1f5f9;
+    --control-border: #7d8594;
+    --xs: #34c759;
+    --s: #0a84ff;
+    --m: #ff9500;
+    --l: #af52de;
+    --xl: #ff3b30;
+    --on-tier: #000000;
+    --code-bg: #1c1f24;
+    --code-fg: #e6e7eb;
+    --mark-bg: rgba(74, 163, 255, 0.24);
+    --mark-line: #4aa3ff;
+    --shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.04);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0c0e12;
+      --card: #161a20;
+      --border: #262b33;
+      --text: #f0f1f3;
+      --muted: #8b94a3;
+      --accent-text: #4aa3ff;
+      --accent-bg: #1a2a44;
+      --accent-fill: #4aa3ff;
+      --on-accent: #06121f;
+      --done-bg: #1a1f26;
+      --control-border: #707987;
+      --code-bg: #0a0c10;
+      --code-fg: #e6e7eb;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 12px rgba(0,0,0,0.3);
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html { scroll-padding-top: calc(var(--header-h, 64px) + 12px); }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent-text); }
+  :focus-visible { outline: 2px solid var(--accent-text); outline-offset: 2px; }
+  .skip-link {
+    position: absolute;
+    left: 16px;
+    top: -48px;
+    background: var(--accent-fill);
+    color: var(--on-accent);
+    padding: 8px 12px;
+    border-radius: 8px;
+    z-index: 20;
+  }
+  .skip-link:focus { top: 8px; }
+  header.app-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 24px;
+  }
+  .header-row {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  h1 {
+    font-size: 18px;
+    margin: 0;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .progress-meter {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 240px;
+  }
+  .progress-bar {
+    flex: 1;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    max-width: 320px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent-fill);
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+  .progress-text {
+    font-size: 13px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .header-actions, .filter-group {
+    display: flex;
+    gap: 8px;
+  }
+  .filter-btn, .reset-btn, .link-btn {
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 6px 12px;
+    min-height: 32px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .filter-btn[aria-pressed="true"] {
+    background: var(--accent-bg);
+    color: var(--accent-text);
+    border-color: var(--accent-text);
+  }
+  .filter-btn:hover, .reset-btn:hover, .link-btn:hover {
+    background: var(--accent-bg);
+  }
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+  .lede {
+    margin: 0 0 20px;
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 70ch;
+  }
+  .project-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 16px;
+    margin-bottom: 24px;
+  }
+  .project-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .project-head h2 {
+    font-size: 15px;
+    margin: 0;
+    font-weight: 600;
+  }
+  .project-head .hint {
+    margin: 0;
+    font-size: 13px;
+    color: var(--muted);
+    flex: 1;
+    min-width: 200px;
+  }
+  .field-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+  }
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .field-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .field input {
+    font: inherit;
+    font-size: 16px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--control-border);
+    background: var(--bg);
+    color: var(--text);
+    min-width: 0;
+  }
+  .field input::placeholder { color: var(--muted); opacity: 1; }
+  .wave-section {
+    margin-bottom: 32px;
+  }
+  .wave-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin: 8px 0 16px;
+  }
+  .wave-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  .wave-meta {
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .prompt-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 8px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .prompt-card.preamble {
+    border-color: var(--accent-text);
+  }
+  .prompt-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .prompt-head:hover {
+    background: color-mix(in srgb, var(--accent-text) 5%, transparent);
+  }
+  .check-wrap {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    width: 24px;
+  }
+  .check {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 2px solid var(--control-border);
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--card);
+    color: var(--on-accent);
+    font-size: 14px;
+    font-weight: bold;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+  .check:hover { border-color: var(--accent-text); }
+  .check[aria-checked="true"] {
+    background: var(--accent-fill);
+    border-color: var(--accent-fill);
+  }
+  .check[aria-checked="true"]::after { content: "✓"; }
+  .prompt-meta {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .prompt-code {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+    font-size: 12px;
+    color: var(--muted);
+    background: var(--done-bg);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .tier-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 6px;
+    color: var(--on-tier);
+    flex-shrink: 0;
+    letter-spacing: 0.02em;
+  }
+  .tier-xs { background: var(--xs); }
+  .tier-s { background: var(--s); }
+  .tier-m { background: var(--m); }
+  .tier-l { background: var(--l); }
+  .tier-xl { background: var(--xl); }
+  .prompt-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+  }
+  .prompt-card.done .prompt-title {
+    text-decoration: line-through;
+    color: var(--muted);
+  }
+  .prompt-time {
+    font-size: 12px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+  }
+  .prompt-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .copy-btn {
+    background: var(--accent-bg);
+    color: var(--accent-text);
+    border: 1px solid transparent;
+    padding: 6px 12px;
+    min-height: 32px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
+  }
+  .copy-btn:hover {
+    background: var(--accent-fill);
+    color: var(--on-accent);
+  }
+  .copy-btn.copied {
+    background: var(--xs);
+    color: var(--on-tier);
+  }
+  .toggle-btn {
+    background: transparent;
+    color: var(--muted);
+    border: none;
+    min-width: 32px;
+    min-height: 32px;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 6px;
+    transition: transform 0.2s ease;
+  }
+  .toggle-btn:hover { background: var(--done-bg); }
+  .toggle-btn[aria-expanded="true"] { transform: rotate(180deg); }
+  .prompt-body {
+    border-top: 1px solid var(--border);
+    padding: 16px;
+    background: var(--code-bg);
+  }
+  .prompt-body[hidden] { display: none; }
+  .prompt-body pre {
+    margin: 0;
+    color: var(--code-fg);
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+    font-size: 12.5px;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-x: auto;
+  }
+  .prompt-body mark.var {
+    background: var(--mark-bg);
+    color: inherit;
+    border-bottom: 1px dashed var(--mark-line);
+    border-radius: 3px;
+    padding: 0 2px;
+  }
+  .prompt-body.prose {
+    background: var(--card);
+    font-size: 14px;
+  }
+  .prose h3 {
+    font-size: 13px;
+    margin: 16px 0 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+  .prose p, .prose ul, .prose ol { margin: 0 0 8px; }
+  .prose ul, .prose ol { padding-left: 22px; }
+  .prose li { margin: 2px 0; }
+  .prose code {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+    font-size: 12.5px;
+    background: var(--done-bg);
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+  .skill-list {
+    list-style: none;
+    padding: 0 !important;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+    gap: 4px 16px;
+  }
+  .skill-list .who {
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+  }
+  .site-footer {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 8px 24px 40px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--text);
+    color: var(--bg);
+    padding: 10px 20px;
+    width: max-content;
+    max-width: calc(100vw - 32px);
+    text-align: center;
+    border-radius: 18px;
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 100;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  }
+  .toast.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  @media (max-width: 640px) {
+    header.app-header { padding: 12px 16px; }
+    main { padding: 16px; }
+    .site-footer { padding: 8px 16px 32px; }
+    .prompt-head { flex-wrap: wrap; }
+    .prompt-actions { width: 100%; justify-content: flex-end; }
+    h1 { font-size: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#prompts">Skip to prompts</a>
+<header class="app-header">
+  <div class="header-row">
+    <h1>Swift Audit Prompts</h1>
+    <div class="progress-meter">
+      <div class="progress-bar" id="progressBar" role="progressbar" aria-label="Audits reviewed" aria-valuemin="0" aria-valuemax="22" aria-valuenow="0"><div id="progressFill" class="progress-fill"></div></div>
+      <span class="progress-text"><span id="completedCount">0</span> / <span id="totalCount">22</span> reviewed</span>
+    </div>
+    <div class="header-actions">
+      <div class="filter-group" role="group" aria-label="Filter prompts">
+        <button type="button" class="filter-btn" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" class="filter-btn" data-filter="todo" aria-pressed="false">To do</button>
+        <button type="button" class="filter-btn" data-filter="done" aria-pressed="false">Done</button>
+      </div>
+      <button type="button" class="reset-btn" id="resetAll">Reset</button>
+    </div>
+  </div>
+</header>
+<main>
+  <p class="lede">22 copy-paste audit prompts for Swift and SwiftUI apps. Each one runs a focused review in <a href="https://claude.com/claude-code">Claude Code</a> with a Swift agent skill.</p>
+  <section class="project-card" aria-labelledby="projectTitle">
+    <div class="project-head">
+      <h2 id="projectTitle">Your project</h2>
+      <p class="hint">Fills in every prompt below. Saved only in this browser.</p>
+      <button type="button" class="link-btn" id="clearProject">Clear</button>
+    </div>
+    <div class="field-grid" id="fieldGrid"></div>
+  </section>
+  <div id="prompts" tabindex="-1"></div>
+</main>
+<footer class="site-footer">
+  MIT licensed · <a href="https://github.com/mvoshell652/swift-audit-prompts">Source on GitHub</a> · Not affiliated with Apple or Anthropic. Each skill belongs to its author.
+</footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="visually-hidden" id="listStatus" role="status" aria-live="polite"></div>
+
+<script>
+const REPO_URL = "https://github.com/mvoshell652/swift-audit-prompts";
+
+// Placeholders the "Your project" fields fill in. A line that holds an
+// optional placeholder is dropped from the prompt when that field is blank.
+const FIELDS = [
+  { key: "APP_NAME", label: "App name", placeholder: "e.g. Acme", fallback: "this app" },
+  { key: "APP_PATH", label: "Project path", placeholder: "e.g. ~/code/acme-ios/", fallback: "./ (the project root)" },
+  { key: "IOS", label: "iOS deployment target", placeholder: "26", fallback: "26" },
+  { key: "SWIFT", label: "Swift version", placeholder: "6.2", fallback: "6.2" },
+  { key: "BACKEND", label: "Backend (optional)", placeholder: "e.g. Supabase, Firebase, CloudKit", optional: true },
+  { key: "FIGMA_FILE", label: "Figma file URL (optional, A-15)", placeholder: "https://www.figma.com/design/…", optional: true },
+];
+const FIELD_BY_KEY = Object.fromEntries(FIELDS.map(f => [f.key, f]));
+
+// Skills the prompts call. Install them however you manage skills.
+const SKILLS = {
+  base: [
+    "swiftui-pro", "swiftui-accessibility-auditor", "swiftui-design-principles", "swiftui-liquid-glass",
+    "swiftui-performance-audit", "swiftui-ui-patterns", "swiftui-view-refactor",
+    "swift-development", "swift-api-design-guidelines-skill", "swift-format-style",
+    "swift-concurrency", "swift-concurrency-expert", "swift-concurrency-pro",
+    "swift-testing", "swift-testing-expert", "swift-testing-pro",
+    "swift-accessibility-skill", "swift-architecture-skill", "swift-focusengine-pro", "swift-security-expert",
+  ],
+  extra: [
+    "ios-accessibility", "figma-to-swiftui", "swiftdata-pro", "writing-for-interfaces",
+    "ios-simulator-skill", "review-swarm", "bug-hunt-swarm",
+  ],
+};
+// Upstream source for each skill, checked against the original author's repo.
+const SKILL_SOURCES = {
+  "swiftui-pro": { url: "https://github.com/twostraws/SwiftUI-Agent-Skill", author: "@twostraws", license: "MIT" },
+  "swiftui-accessibility-auditor": { url: "https://github.com/rgmez/apple-accessibility-skills/tree/main/skills/swiftui-accessibility-auditor", author: "@rgmez", license: "MIT" },
+  "swiftui-design-principles": { url: "https://github.com/arjitj2/swiftui-design-principles", author: "@arjitj2", license: "MIT" },
+  "swiftui-liquid-glass": { url: "https://github.com/Dimillian/Skills/tree/main/swiftui-liquid-glass", author: "@Dimillian", license: "MIT" },
+  "swiftui-performance-audit": { url: "https://github.com/Dimillian/Skills/tree/main/swiftui-performance-audit", author: "@Dimillian", license: "MIT" },
+  "swiftui-ui-patterns": { url: "https://github.com/Dimillian/Skills/tree/main/swiftui-ui-patterns", author: "@Dimillian", license: "MIT" },
+  "swiftui-view-refactor": { url: "https://github.com/Dimillian/Skills/tree/main/swiftui-view-refactor", author: "@Dimillian", license: "MIT" },
+  "swift-development": { url: "https://github.com/sammcj/agentic-coding/tree/main/Skills/swift-development", author: "@sammcj", license: "Apache-2.0" },
+  "swift-api-design-guidelines-skill": { url: "https://github.com/Erikote04/Swift-API-Design-Guidelines-Agent-Skill", author: "@Erikote04", license: "MIT" },
+  "swift-format-style": { url: "https://github.com/n0an/Swift-FormatStyle-Agent-Skill", author: "@n0an", license: "MIT" },
+  "swift-concurrency": { url: "https://github.com/AvdLee/Swift-Concurrency-Agent-Skill", author: "@AvdLee", license: "MIT" },
+  "swift-concurrency-expert": { url: "https://github.com/Dimillian/Skills/tree/main/swift-concurrency-expert", author: "@Dimillian", license: "MIT" },
+  "swift-concurrency-pro": { url: "https://github.com/twostraws/Swift-Concurrency-Agent-Skill", author: "@twostraws", license: "MIT" },
+  "swift-testing": { url: "https://github.com/bocato/swift-testing-agent-skill", author: "@bocato", license: "MIT" },
+  "swift-testing-expert": { url: "https://github.com/AvdLee/Swift-Testing-Agent-Skill", author: "@AvdLee", license: "MIT" },
+  "swift-testing-pro": { url: "https://github.com/twostraws/Swift-Testing-Agent-Skill", author: "@twostraws", license: "MIT" },
+  "swift-accessibility-skill": { url: "https://github.com/PasqualeVittoriosi/swift-accessibility-skill", author: "@PasqualeVittoriosi", license: "MIT" },
+  "swift-architecture-skill": { url: "https://github.com/efremidze/swift-architecture-skill", author: "@efremidze", license: "MIT" },
+  "swift-focusengine-pro": { url: "https://github.com/mhaviv/Swift-FocusEngine-Agent-Skill", author: "@mhaviv", license: "MIT" },
+  "swift-security-expert": { url: "https://github.com/ivan-magda/swift-security-skill", author: "@ivan-magda", license: "MIT" },
+  "ios-accessibility": { url: "https://github.com/dadederk/iOS-Accessibility-Agent-Skill", author: "@dadederk", license: "MIT" },
+  "figma-to-swiftui": { url: "https://github.com/daetojemax/figma-to-swiftui-skill", author: "@daetojemax", license: "no license file" },
+  "swiftdata-pro": { url: "https://github.com/twostraws/SwiftData-Agent-Skill", author: "@twostraws", license: "MIT" },
+  "writing-for-interfaces": { url: "https://github.com/andrewgleave/skills/tree/main/writing-for-interfaces", author: "@andrewgleave", license: "MIT" },
+  "ios-simulator-skill": { url: "https://github.com/conorluddy/ios-simulator-skill", author: "@conorluddy", license: "MIT" },
+  "review-swarm": { url: "https://github.com/Dimillian/Skills/tree/main/review-swarm", author: "@Dimillian", license: "MIT" },
+  "bug-hunt-swarm": { url: "https://github.com/Dimillian/Skills/tree/main/bug-hunt-swarm", author: "@Dimillian", license: "MIT" },
+};
+
+const HOW_TO_HTML = `
+<p>Each prompt is written for a fresh Claude Code session with the named skill installed. The first line is the slash command. The rest tells the skill what to audit and how to report.</p>
+<ol>
+  <li>Fill in <strong>Your project</strong> above. Every prompt updates as you type, and the highlighted text shows what was filled in.</li>
+  <li>Open a fresh Claude Code session in your project root.</li>
+  <li>Optional: paste the <strong>base prompt</strong> first to load all 20 Swift skills at once. <a href="https://github.com/mvoshell652/playlist">Playlist</a> can save that list as a single slash command.</li>
+  <li>Click <strong>Copy</strong> on an audit, paste it into the session, and let it run.</li>
+  <li>Tick the box once you've triaged the findings. Progress stays in this browser.</li>
+</ol>
+<h3>Run order</h3>
+<ul>
+  <li>A-01 sets the baseline. Run it first.</li>
+  <li>A-02 to A-04 cover foundational correctness. Fix the critical findings before going further.</li>
+  <li>A-05 to A-11 are deep dives into performance, accessibility, modernization and UI.</li>
+  <li>A-12 to A-14 cover code quality, style and test coverage.</li>
+  <li>A-15 is a Figma-versus-code coverage report.</li>
+  <li>A-16 to A-20 go deeper on accessibility, focus, persistence, copy and runtime QA.</li>
+  <li>A-21 and A-22 are cross-cutting multi-agent passes, best saved for a final sweep.</li>
+</ul>
+<h3>Time estimates</h3>
+<p>Rough time to run an audit and triage what it finds: S about 2 hours, M about 3, L about 4, XL about a day.</p>
+<h3>Skills left out on purpose</h3>
+<ul>
+  <li>swift-concurrency, swift-concurrency-pro, swift-testing and swift-testing-pro have no audit of their own. The -expert audits cover that ground, and the base prompt still loads them.</li>
+  <li>core-data-expert: A-18 (swiftdata-pro) covers the persistence question.</li>
+  <li>UIKit and AppKit accessibility auditors: these prompts assume a SwiftUI codebase.</li>
+  <li>macOS packaging skills: wrong platform.</li>
+  <li>ios-debugger-agent: an interactive runtime tool rather than a static audit.</li>
+  <li>App Store Connect (asc-*) skills: release workflow, not code audit.</li>
+</ul>`;
+
+const PROMPTS = [
+  {
+    id: "how-to",
+    kind: "info",
+    code: "START",
+    title: "How to use this page",
+    html: HOW_TO_HTML,
+  },
+  {
+    id: "base-prompt",
+    kind: "base",
+    code: "BASE",
+    copyLabel: "Copy base prompt",
+    title: "Base prompt: load all Swift and SwiftUI skills",
+    content: `Load all Swift and SwiftUI skills in parallel. Invoke each via the Skill tool in a single message:
+SwiftUI (7):
+* swiftui-pro
+* swiftui-accessibility-auditor
+* swiftui-design-principles
+* swiftui-liquid-glass
+* swiftui-performance-audit
+* swiftui-ui-patterns
+* swiftui-view-refactor
+Swift core (3):
+* swift-development
+* swift-api-design-guidelines-skill
+* swift-format-style
+Concurrency (3):
+* swift-concurrency
+* swift-concurrency-expert
+* swift-concurrency-pro
+Testing (3):
+* swift-testing
+* swift-testing-expert
+* swift-testing-pro
+Specialized (4):
+* swift-accessibility-skill
+* swift-architecture-skill
+* swift-focusengine-pro
+* swift-security-expert
+________________
+
+Alignment notes — apply to every recommendation:
+Target iOS {{IOS}} and Swift {{SWIFT}}+ as the deployment baseline. Assume iOS {{IOS}} APIs are available without #available guards; anything newer needs a guard with a working fallback.
+Prefer modern native APIs where the target above supports them: Liquid Glass (glassEffect, GlassEffectContainer, .buttonStyle(.glass)) over custom blur/material on iOS 26+; Observation (@Observable, @State) over ObservableObject on iOS 17+; NavigationStack / NavigationSplitView; ViewThatFits; FormatStyle; Swift Testing over XCTest on Swift 6+; structured concurrency, with @concurrent and default actor isolation on Swift 6.2+.
+Flag UIKit that has a SwiftUI equivalent, deprecated APIs, and outdated patterns as issues to modernize.
+If a preferred API needs a newer iOS or Swift than the target above, keep the existing pattern and don't flag it.
+Backend: {{BACKEND}}. If there is a skill for it (e.g. /supabase or /firebase), load that too.
+
+After loading, give a one-line confirmation per skill and wait for instructions.
+If a Figma link is provided, use the Figma MCP or REST API to pull node data, but don't take it literally: understand the intent and build with current SwiftUI defaults, because Figma components often lag behind the latest SwiftUI changes.`
+  },
+  {
+    id: "A-01", wave: 1, waveTitle: "Wave 1 — Baseline", tier: "XL", time: "~1d",
+    title: "/swiftui-pro — flagship SwiftUI quality audit",
+    content: `/swiftui-pro
+
+Perform a comprehensive SwiftUI quality audit of {{APP_NAME}}, cross-referenced against the full swiftui-pro knowledge base.
+
+App location: {{APP_PATH}}
+Stack: SwiftUI, iOS {{IOS}}, Swift {{SWIFT}} strict concurrency
+Backend: {{BACKEND}}
+
+Step 1 — Load every file in the swiftui-pro skill's references/ folder before auditing, except performance-plus.md, which is meant for deep performance reviews. The core files are:
+- references/api.md
+- references/views.md
+- references/data.md
+- references/navigation.md
+- references/design.md
+- references/accessibility.md
+- references/performance.md
+- references/swift.md
+- references/hygiene.md
+- any other references/*.md the skill ships (for example resizability.md and localization.md)
+
+Step 2 — Read every View, every view model, and the app entry point (the @main App type).
+
+Step 3 — Audit the ENTIRE app holistically, citing the specific reference file that supports each finding:
+1. Data flow — @State, @Binding, @Observable, @Environment usage (cite data.md)
+2. Navigation — NavigationStack, sheet, tab patterns (cite navigation.md)
+3. View composition and body complexity (cite views.md, hygiene.md)
+4. Deprecated or superseded APIs still in use (cite api.md)
+5. Design tokens and semantic styling (cite design.md)
+6. Accessibility coverage (cite accessibility.md)
+7. Performance antipatterns (cite performance.md)
+8. Swift {{SWIFT}} / concurrency issues in Views (cite swift.md)
+9. General hygiene issues (cite hygiene.md)
+10. Layout across window sizes — iPad multitasking, adaptive bars, safe areas (cite resizability.md, if the skill has it)
+11. Localization — localizable text, formatting, resource handling (cite localization.md, if the skill has it)
+
+Every finding MUST cite the reference file that flagged it.
+
+Output sections:
+- 🏗️ Architecture & Data Flow
+- 🧭 Navigation & Composition
+- 🎨 Design & API Usage
+- ♿️ Accessibility
+- ⚡️ Performance
+- 🧹 Hygiene & Concurrency
+- ✅ Priority Summary (High / Medium / Low)`
+  },
+  {
+    id: "A-02", wave: 2, waveTitle: "Wave 2 — Foundational correctness", tier: "L", time: "~4h",
+    title: "/swift-concurrency-expert — Swift strict concurrency",
+    content: `/swift-concurrency-expert
+
+Audit {{APP_NAME}} for Swift {{SWIFT}} strict concurrency correctness.
+
+App location: {{APP_PATH}}
+Targets: Swift {{SWIFT}} strict concurrency, iOS {{IOS}}
+
+Audit every service, view model, model, and utility file, plus the Views that use them, for:
+1. Incorrect or missing @MainActor annotations — flag any View-updating code not on the MainActor
+2. Non-isolated async functions that touch UI state
+3. Task lifetimes — unstructured Tasks that outlive their owner, missing cancellation
+4. Sendable conformances — missing or incorrect, especially on model types
+5. Data races — mutable shared state accessed from multiple actors/tasks
+6. async/await antipatterns (e.g. an unstructured Task { await … } inside a View's .task)
+7. Continuation misuse (withCheckedContinuation / withCheckedThrowingContinuation) — especially in networking and backend client wrappers
+8. @Observable and @MainActor interaction — isolation correctness on view models
+
+For each finding: file + line, the problem, and the corrected code snippet.
+Group findings: Data Race Risk / Incorrect Isolation / Antipattern / Sendable Gap
+End with a High/Medium/Low priority summary.`
+  },
+  {
+    id: "A-03", wave: 2, waveTitle: "Wave 2 — Foundational correctness", tier: "L", time: "~4h",
+    title: "/swift-security-expert — auth, secrets, app extensions",
+    content: `/swift-security-expert
+
+Perform a full security audit of {{APP_NAME}}.
+
+App location: {{APP_PATH}}
+Backend: {{BACKEND}}
+Also audit every app extension target (share, widget, notification service, etc.).
+
+Audit every file for:
+1. Hardcoded secrets — backend URLs and keys, API keys, third-party tokens (separate keys that are designed to ship in the app, like publishable keys, from truly secret ones)
+2. Keychain usage — are auth and session tokens stored in the Keychain, not UserDefaults or plain files?
+3. Auth token handling — the sign-in → session → refresh → sign-out flow, and what happens when a token expires
+4. Transport security — any plain HTTP, ATS exceptions, certificate pinning opportunities
+5. Deep link / URL scheme / universal link handling — injection risks in any URL parsing
+6. Log leakage — print() or Logger calls that output PII, tokens, or user identifiers (check Logger privacy levels)
+7. App extension sandboxing — data shared between the app and its extensions through app groups and shared containers
+8. Untrusted input parsing — imported files, documents, pasteboard contents, and any data received from other apps
+9. QR / barcode / NFC scanning — validation of scanned payloads
+10. Biometric / passkey opportunities missed
+
+For each finding: file + line, severity (Critical / High / Medium / Low), and recommended fix.
+End with a ranked remediation list.`
+  },
+  {
+    id: "A-04", wave: 2, waveTitle: "Wave 2 — Foundational correctness", tier: "L", time: "~4h",
+    title: "/swift-architecture-skill — boundaries & dependency injection",
+    content: `/swift-architecture-skill
+
+Audit the architecture of {{APP_NAME}} for structural and design quality issues.
+
+App location: {{APP_PATH}}
+Stack: SwiftUI, iOS {{IOS}}, Swift {{SWIFT}} strict concurrency
+Backend: {{BACKEND}}
+
+Read every service, view model, model, and utility file, plus the Views that use them. First name the architecture actually in use (MVVM, MV, TCA, etc.), then judge the code against that pattern.
+
+Audit for:
+1. Boundary violations — Views containing business logic, view models making layout decisions
+2. Service layer coupling — view models calling the backend or networking APIs directly instead of through services
+3. Dependency injection — hardcoded singletons vs. injectable protocols
+4. Model layer purity — models that hold UI state or perform network calls
+5. Responsibility violations — "manager" and service types that do too much
+6. Shared mutable state — globals, singletons, and whether they're safe under Swift {{SWIFT}} strict concurrency
+7. Missing abstractions — repeated patterns across view models that should be extracted
+8. Folder organization — is code grouped by feature or by type, and can a feature be found and changed in one place?
+
+For each finding: file + line, the violation, and a recommended fix with code.
+End with an architectural debt summary (top 5 issues).`
+  },
+  {
+    id: "A-05", wave: 3, waveTitle: "Wave 3 — Performance & accessibility", tier: "M", time: "~3h",
+    title: "/swiftui-performance-audit — rendering performance",
+    content: `/swiftui-performance-audit
+
+Audit {{APP_NAME}} for SwiftUI rendering and performance issues.
+
+App location: {{APP_PATH}}
+
+Read every View file, plus the view models and observable types they depend on. Audit for:
+1. Unnecessary view re-renders — @Observable or @EnvironmentObject state placed too high, causing whole-tree invalidations
+2. Heavy computed properties in view bodies — work that should be cached or moved out of body
+3. Missing or unstable Identifiable ids on list items causing full List re-renders
+4. Large monolithic view bodies doing too much layout work in a single body
+5. Lazy vs. eager containers — List vs. LazyVStack vs. ScrollView misuse
+6. Image loading — AsyncImage usage, caching, and downsampling of large images in avatars and thumbnails
+7. Animation performance — .animation() placed so that it causes cascading invalidations
+8. @StateObject vs. @ObservedObject / @State vs. @Bindable misuse
+9. Expensive view init — work done in init() instead of .task or .onAppear
+10. Redundant shape/path recalculation in custom drawing, charts, and Canvas views
+
+For each issue: file + line, what triggers unnecessary work, and the fix.
+Group by impact: Frame-Drop Risk / Excess Re-renders / Startup Cost.`
+  },
+  {
+    id: "A-06", wave: 3, waveTitle: "Wave 3 — Performance & accessibility", tier: "M", time: "~3h",
+    title: "/swiftui-accessibility-auditor — SwiftUI a11y modifiers",
+    content: `/swiftui-accessibility-auditor
+
+Perform a full SwiftUI accessibility audit of {{APP_NAME}}.
+
+App location: {{APP_PATH}}
+iOS target: {{IOS}}+, Swift {{SWIFT}}
+
+Read every View file. Audit for:
+1. Missing accessibilityLabel on images, icons, and custom buttons
+2. Hints — interactive elements whose result isn't obvious from the label and have no accessibilityHint, and redundant hints that just repeat the label
+3. Custom controls missing the correct accessibility traits (.isButton, .isHeader, .isSelected)
+4. accessibilityValue missing on progress indicators, stats, and other numeric values
+5. Dynamic Type — hardcoded font sizes (.system(size:)) instead of text styles (.body, .headline)
+6. Color contrast — hardcoded colors that may fail WCAG AA
+7. Focus order — views that would have unintuitive VoiceOver traversal
+8. Missing accessibilityElement(children: .combine) on card-style compound views
+9. Missing .accessibilityAddTraits(.isButton) on tappable rows that aren't a Button
+
+Audit the most-used screens first (root tabs, profile, settings, sign-in, onboarding) and say which views you treated as priority.
+
+Report: file + line, issue type, severity (blocker / serious / minor), and corrected modifier code.`
+  },
+  {
+    id: "A-07", wave: 3, waveTitle: "Wave 3 — Performance & accessibility", tier: "M", time: "~3h",
+    title: "/ios-accessibility — experiential a11y (VoiceOver, Reduce Motion, keyboard)",
+    content: `/ios-accessibility
+
+Perform a comprehensive experiential iOS accessibility audit of {{APP_NAME}}.
+
+App location: {{APP_PATH}}
+Platform: iOS {{IOS}}, SwiftUI
+
+This goes deeper than SwiftUI modifiers — audit the full accessibility experience:
+1. VoiceOver reading order — does focus order match visual order on every main screen?
+2. Custom gestures — camera and scanner views, drag and swipe interactions, custom controls — accessible alternatives present?
+3. Reduce Motion — any animations that don't respect the accessibilityReduceMotion environment value?
+4. Reduce Transparency — glass/blur effects that should adapt to accessibilityReduceTransparency
+5. Switch Control — all interactive elements reachable?
+6. Full Keyboard Access (iPad, hardware keyboards) — tab bar, modal sheets, forms
+7. Large Text / Dynamic Type — fixed-height containers that clip at larger sizes
+8. Localization readiness — hardcoded English strings not in a String Catalog or LocalizedStringKey / String(localized:)
+9. Haptics — appropriate feedback on destructive actions (delete, leave, report, sign out)
+10. Voice Control — are button labels natural enough for "Tap [name]" voice commands?
+
+Report by screen: file, issue, impact (blocks use / degrades use / minor), fix.
+End with an App Store–readiness verdict on accessibility.`
+  },
+  {
+    id: "A-08", wave: 4, waveTitle: "Wave 4 — Modernization & UI quality", tier: "M", time: "~3h",
+    title: "/swiftui-liquid-glass — iOS 26 modernization opportunities",
+    content: `/swiftui-liquid-glass
+
+Audit {{APP_NAME}} for Liquid Glass and other iOS 26 SwiftUI API opportunities.
+
+App location: {{APP_PATH}}
+Deployment target: iOS {{IOS}}, Swift {{SWIFT}}
+If the deployment target is below iOS 26, wrap every suggestion in an #available(iOS 26, *) check with a working fallback.
+
+Read every View file. Identify:
+1. Custom glass/frosted overlay effects — should use .glassEffect() or the iOS 26 material APIs
+2. Custom navigation bars and toolbar modifiers — reimplementing native iOS 26 toolbar behavior?
+3. Custom sheet presentations that should use the native iOS 26 sheet APIs
+4. Custom tab bars — evaluate against the iOS 26 TabView enhancements (fluid tab bar, floating tabs)
+5. Any .background() or overlay patterns Liquid Glass now replaces
+6. Card components — Liquid Glass treatment opportunities, and places where glass would be wrong
+7. Buttons with custom styles that .buttonStyle(.glass) / iOS 26 button styles could replace
+8. Search bars, pickers, menus that have new iOS 26 equivalents
+9. Scroll effects — hand-rolled fades/blurs under bars that scrollEdgeEffectStyle(_:for:) replaces; .scrollTransition (iOS 17+, needs no iOS 26 guard) where it fits
+
+For each opportunity: file + line, current code, iOS 26 replacement with code snippet.
+End with a modernization priority list (High-value / Medium / Polish).`
+  },
+  {
+    id: "A-09", wave: 4, waveTitle: "Wave 4 — Modernization & UI quality", tier: "M", time: "~3h",
+    title: "/swiftui-ui-patterns — pattern consistency across screens",
+    content: `/swiftui-ui-patterns
+
+Audit {{APP_NAME}} for SwiftUI UI pattern consistency and best practices.
+
+App location: {{APP_PATH}}
+
+Read all View files. Audit for:
+1. Sheet / navigation inconsistency — mixing .sheet, .fullScreenCover, NavigationLink across similar flows
+2. Loading state patterns — inconsistent ProgressView usage, skeleton screens, and whether a shared loading-state type (e.g. a Loadable<T> enum) exists and is used consistently
+3. Error state handling — silent failures vs. error views vs. no pattern
+4. Empty state handling — List/scroll views missing empty states
+5. Button patterns — multiple custom button styles where a single design-system button should exist
+6. Card patterns — similar cards with inconsistent padding/structure
+7. Pull-to-refresh — which views have it, which don't but should
+8. Confirmation dialogs — destructive actions (delete, leave, report, sign out) that should use .confirmationDialog
+9. Form patterns — settings and profile-editing screens — consistent Section/Form usage?
+10. Toolbar patterns — placement, grouping, consistency across screens
+
+Report: pattern name, files affected, what's inconsistent, recommended unified pattern with code.
+End with a "design system gap" list of missing shared components.`
+  },
+  {
+    id: "A-10", wave: 4, waveTitle: "Wave 4 — Modernization & UI quality", tier: "M", time: "~3h",
+    title: "/swiftui-view-refactor — view decomposition opportunities",
+    content: `/swiftui-view-refactor
+
+Audit {{APP_NAME}}'s SwiftUI views for decomposition and composition quality.
+
+App location: {{APP_PATH}}
+
+Read all View files. Flag:
+1. View bodies over ~100 lines that should be broken into subviews
+2. Repeated view code across files — should be extracted to a shared component
+3. Views with more than one responsibility (layout + data fetching + state management)
+4. @ViewBuilder closures too large — should be extracted
+5. Views taking too many parameters — sign of a missing intermediate component
+6. Conditional rendering buried deep in view hierarchies that should be lifted
+7. Missing ViewModifier extractions — repeated .padding / .background / .clipShape chains
+8. Hardcoded spacing/padding stacks that should be a shared layout modifier
+
+Start with the largest view files by line count and list the top ten you found.
+
+Report: file + line, current line count, what to extract, and a sketch of the refactored structure.
+End with a top-10 list of highest-ROI refactors.`
+  },
+  {
+    id: "A-11", wave: 4, waveTitle: "Wave 4 — Modernization & UI quality", tier: "M", time: "~3h",
+    title: "/swiftui-design-principles — design system & token fidelity",
+    content: `/swiftui-design-principles
+
+Audit {{APP_NAME}}'s design system implementation for consistency and token fidelity.
+
+App location: {{APP_PATH}}
+
+First find the design token source: a tokens or theme file, asset-catalog colors, or Color / Font extensions. If there isn't one, say so and turn the audit into "which tokens should exist".
+
+Read the token source in full, then read at minimum the eight most-used screens.
+
+Audit:
+1. Token usage — views using token constants vs. hardcoded hex/RGB values
+2. Spacing — padding/spacing values from the token system or arbitrary numbers
+3. Typography — font definitions from tokens or hardcoded .system(size:)
+4. Color semantics — semantic tokens used correctly (surface vs. background vs. brand vs. native .primary/.secondary)
+5. Shadow / elevation — hardcoded shadow values that should come from tokens
+6. Radius — corner radii that bypass the token system
+7. Inconsistencies — views implementing the same design element differently
+8. Missing tokens — values that appear in multiple views but aren't tokens yet
+9. Incorrect token category — using a "border" token where a "divider" token is correct, etc.
+
+Format findings as: file + line, current hardcoded value, correct token reference, token system gap if applicable.
+End with a list of missing tokens to add.`
+  },
+  {
+    id: "A-12", wave: 5, waveTitle: "Wave 5 — Code quality & testing", tier: "S", time: "~2h",
+    title: "/swift-api-design-guidelines-skill — Swift API surface review",
+    content: `/swift-api-design-guidelines-skill
+
+Audit {{APP_NAME}}'s Swift API surface against the Swift API Design Guidelines.
+
+App location: {{APP_PATH}}
+Focus: models, services, view models, and utilities
+
+Check for:
+1. Naming — types, methods, properties violating Swift naming (clarity at the use site, no redundant type names, verb/noun rules)
+2. Protocol naming — nouns for what something is, -able / -ible / -ing for capabilities; flag "Protocol"-suffixed names that don't need it
+3. Boolean properties — missing is/has/can/should prefixes
+4. Function labels — first argument labels that violate conventions
+5. Inconsistent naming across families of similar types (e.g. all the *Row views, all the *Section views)
+6. Overloaded names — the same name used with inconsistent semantics
+7. Access control — types/members that should be private or internal but aren't
+8. Type design — structs that should be enums (finite cases), classes that should be structs (value semantics)
+9. Initializer design — too many overloads, missing default values, forced optionals
+
+Report: file + line, current name, recommended name, rule violated.
+End with a rename priority list (public API > internal > private).`
+  },
+  {
+    id: "A-13", wave: 5, waveTitle: "Wave 5 — Code quality & testing", tier: "S", time: "~2h",
+    title: "/swift-format-style — style, hygiene & FormatStyle sweep",
+    content: `/swift-format-style
+
+Audit {{APP_NAME}} for Swift code style, hygiene, and value-formatting issues.
+
+App location: {{APP_PATH}}
+Swift version: {{SWIFT}}
+
+Read files across the whole app target (models, services, view models, views, utilities). Audit for:
+1. Inconsistent access control — missing private/internal/public on properties and methods
+2. Force unwraps (!) in production code — catalog every ! that isn't justified
+3. Force casts (as!) — flag and suggest safe alternatives
+4. Magic numbers/strings — hardcoded values that should be constants or enum cases
+5. Dead code — commented-out code, unused variables, unreachable branches
+6. TODO / FIXME / XXX comments — catalog all with file + line
+7. Inconsistent formatting — trailing closure styles, blank line usage, import ordering
+8. Overly long lines or functions hurting readability
+9. print() calls left in production code
+10. Redundant type annotations and redundant self. references
+11. Legacy formatting — DateFormatter, NumberFormatter, MeasurementFormatter, ByteCountFormatter, and String(format:) that .formatted() / FormatStyle replaces
+12. SwiftUI Text built from pre-formatted strings — Text("\\(value.formatted())") instead of Text(value, format: …)
+13. Currency held in Float/Double instead of Decimal
+
+Report: file + line, issue type, suggested fix. Group by issue type for easy triage.
+End with a "quick wins" list (auto-fixable) and a "needs judgment" list.`
+  },
+  {
+    id: "A-14", wave: 5, waveTitle: "Wave 5 — Code quality & testing", tier: "L", time: "~4h",
+    title: "/swift-testing-expert — test coverage plan",
+    content: `/swift-testing-expert
+
+Audit {{APP_NAME}} for test coverage gaps and testing quality.
+
+App location: {{APP_PATH}}
+Find the test targets: check the .xcodeproj or Package.swift, and look for *Tests/ and *UITests/ folders.
+
+Audit:
+1. Current state — what test targets exist, how many tests, what they cover
+2. View model coverage — list every view model and whether it has unit tests
+3. Service coverage — list every service (networking, auth, persistence, notifications, HealthKit, etc.) and whether it has unit tests
+4. Utility coverage — pure-logic utilities (parsers, calculators, formatters, query builders) without tests
+5. Integration test gaps — backend round-trips, auth flows, app extensions
+6. UI test gaps — critical flows (onboarding, sign-in, the app's core actions)
+7. Testability blockers — singletons, static calls, missing protocol abstractions preventing mocking
+
+Deliverables:
+- A prioritized test plan (which files to add first, what cases each covers)
+- Code changes needed to make the code testable (protocol extractions, DI additions)
+- A minimum viable test suite for ship confidence
+- Use Swift Testing (@Test, #expect) for new unit tests when the toolchain is Swift 6 or later, otherwise XCTest; UI tests stay on XCTest`
+  },
+  {
+    id: "A-15", wave: 6, waveTitle: "Wave 6 — Coverage & deeper swings", tier: "M", time: "~3h",
+    title: "/figma-to-swiftui — Figma vs. code coverage gap report",
+    content: `/figma-to-swiftui
+
+Use the Figma MCP to do a coverage audit — NOT a code conversion.
+
+Figma file: {{FIGMA_FILE}}
+If no Figma file is listed above, ask me for the file URL before starting.
+
+Goal: identify which Figma designs are missing or incomplete in the iOS codebase.
+
+App location: {{APP_PATH}}
+
+For each top-level screen and component in the Figma file, answer:
+1. Does a matching SwiftUI view exist?
+2. If yes — is it complete (all states and variants implemented) or partial?
+3. If no — is it planned for later, or a missing screen the current release needs?
+
+If the repo has product scope docs (epics, PRDs, a roadmap), cross-reference them to flag design-vs-scope mismatches.
+
+Deliverable: a coverage matrix with columns:
+| Figma screen | Swift file (or "missing") | Completeness (full / partial / stub / missing) | Scope (now / later) | Priority |
+
+Do NOT generate any SwiftUI code. This is a gap report only.
+End with a top-10 list of highest-priority screens to build or finish.`
+  },
+  {
+    id: "A-16", wave: 6, waveTitle: "Wave 6 — Coverage & deeper swings", tier: "S", time: "~2h",
+    title: "/swift-accessibility-skill — Accessibility Inspector audit",
+    content: `/swift-accessibility-skill
+
+Audit {{APP_NAME}} against what the iOS Accessibility Inspector and other platform tooling will flag.
+
+App location: {{APP_PATH}}
+
+This is distinct from the SwiftUI modifier audit and the experiential audit — it's about what the platform tools will flag at runtime.
+
+Audit:
+1. Accessibility Inspector audit script — list the exact runs needed for each top-level screen (Audit, Inspection, Color Contrast)
+2. Accessibility traits the Inspector will flag as missing or wrong
+3. Hit-target sizing — buttons/rows under 44x44pt (per the HIG)
+4. Group containers — views that should be one accessibility element but expose children individually
+5. Labels that read awkwardly to VoiceOver (e.g. "btn_invite_send" rather than "Send invite")
+6. Headings — missing .accessibilityAddTraits(.isHeader) on section headers
+7. Live regions — status updates (toasts, error banners) that don't post an accessibility announcement
+8. Decorative images that should be .accessibilityHidden(true)
+9. Custom rotor opportunities for long lists
+
+Deliverable: a checklist a tester can run through in Accessibility Inspector, plus a code-level fix list.`
+  },
+  {
+    id: "A-17", wave: 6, waveTitle: "Wave 6 — Coverage & deeper swings", tier: "S", time: "~2h",
+    title: "/swift-focusengine-pro — @FocusState + keyboard navigation",
+    content: `/swift-focusengine-pro
+
+Audit {{APP_NAME}} for @FocusState and keyboard navigation correctness.
+
+App location: {{APP_PATH}}
+Context: iOS {{IOS}} — iPad Stage Manager, hardware keyboards, and external displays must work
+
+Audit:
+1. Forms missing @FocusState — every form and text-entry screen (profile editing, sign-in, onboarding, compose, search)
+2. Tab/Next behavior between fields — does Return move to the next field correctly?
+3. Submit-on-Enter — forms that should commit on the keyboard return key
+4. Focus traps — modal sheets that don't reset focus when dismissed
+5. Default focus — sheets/screens missing .defaultFocus or an initial @FocusState assignment
+6. Keyboard shortcuts (.keyboardShortcut) — destructive actions and common navigation that should have Command shortcuts
+7. Toolbar focus order on iPad
+8. Search field focus on screens with .searchable
+
+Report: file + line, missing/incorrect focus behavior, corrected code.
+End with a list of Command shortcuts to add for power users.`
+  },
+  {
+    id: "A-18", wave: 6, waveTitle: "Wave 6 — Coverage & deeper swings", tier: "M", time: "~3h",
+    title: "/swiftdata-pro — local persistence / offline cache evaluation",
+    content: `/swiftdata-pro
+
+Evaluate whether {{APP_NAME}} should adopt SwiftData for local persistence and offline caching.
+
+App location: {{APP_PATH}}
+Backend: {{BACKEND}}
+Current state: find out what persistence exists today (SwiftData, Core Data, files, UserDefaults, or none) before answering.
+
+This is an evaluation, not a migration. Answer:
+1. What data is fetched repeatedly that would benefit from local caching? List the app's core entities.
+2. What screens fail or look broken when offline? Walk through the main screens.
+3. Where is transient cached data stored today (in-memory @Observable singletons? UserDefaults? files?)
+4. What would a minimal SwiftData schema look like for those core entities?
+5. Sync strategy — read-through cache, write-through, or background reconciliation with the backend?
+6. Migration cost vs. benefit — worth it now, or later?
+7. Risks — model drift between SwiftData @Model types and the backend schema
+
+Deliverable: a recommendation (adopt now / adopt later / don't adopt) with reasoning, plus a sketch schema if recommended.`
+  },
+  {
+    id: "A-19", wave: 6, waveTitle: "Wave 6 — Coverage & deeper swings", tier: "M", time: "~3h",
+    title: "/writing-for-interfaces — UI copy + microcopy audit",
+    content: `/writing-for-interfaces
+
+Audit {{APP_NAME}} for UI copy quality, tone consistency, and microcopy gaps.
+
+App location: {{APP_PATH}}
+
+Read every View file. Audit:
+1. Tone consistency — does the app sound like one product, or like a dozen different writers?
+2. Empty states — empty list/screen copy that's missing or unhelpful
+3. Error messages — generic "Something went wrong" vs. actionable error copy
+4. Button labels — vague labels like "OK", "Submit", "Done" where specific verbs would be better ("Send invite", "Save profile")
+5. Loading states — "Loading…" vs. specific copy ("Finding results…")
+6. Confirmation dialog copy — destructive action confirmations (delete, leave, report) — are the stakes clear?
+7. Onboarding copy — does the flow read coherently end to end?
+8. Sentence case vs. title case consistency
+9. Length — copy that's too long for the available space, copy that's too terse
+10. Accessibility of copy — jargon, idioms, and domain terms a new user wouldn't know
+
+Report: file + line, current copy, recommended copy, reason.
+End with a tone-of-voice summary the team can codify going forward.`
+  },
+  {
+    id: "A-20", wave: 6, waveTitle: "Wave 6 — Coverage & deeper swings", tier: "M", time: "~3h",
+    title: "/ios-simulator-skill — runtime smoke test runbook",
+    content: `/ios-simulator-skill
+
+Build a runtime smoke test plan for {{APP_NAME}} using the iOS Simulator.
+
+App location: {{APP_PATH}}
+Target devices: a current iPhone and iPad on iOS {{IOS}}, plus the smallest supported iPhone
+
+This is a manual + automated smoke test plan, not code generation. Deliver:
+1. Boot test — clean install, first launch, sign-in (if any), onboarding completion
+2. Critical path scripts — identify the app's 5–8 core user journeys from the code and script each one
+3. State permutations to test — e.g. signed out, new user with no data, active user, user with pending items
+4. Edge devices — smallest supported iPhone and largest iPad — layouts to verify
+5. Permission states — every permission the app requests, in denied and limited states
+6. Network states — offline launch, slow network (Network Link Conditioner), request timeout
+7. Dark mode + light mode quick sweep
+8. Dynamic Type — XS and AX5 sweep on key screens
+9. Multitasking — backgrounding mid-flow, returning to foreground
+10. Localization — a pseudolanguage (e.g. double-length) to spot truncation
+
+Deliverable: a numbered runbook a QA tester can execute in under 60 minutes per build.`
+  },
+  {
+    id: "A-21", wave: 7, waveTitle: "Wave 7 — Cross-cutting passes", tier: "XL", time: "~1d",
+    title: "/review-swarm — multi-agent parallel code review",
+    content: `/review-swarm
+
+Orchestrate a parallel code review of {{APP_NAME}} across multiple specialized lenses.
+
+App location: {{APP_PATH}}
+Context: iOS {{IOS}}, SwiftUI, Swift {{SWIFT}}
+Backend: {{BACKEND}}
+
+Spawn parallel reviewers covering:
+1. Concurrency correctness (Swift {{SWIFT}} strict)
+2. Security and auth handling
+3. SwiftUI rendering performance
+4. Accessibility coverage
+5. Architecture and boundaries
+6. Code style and hygiene
+7. Test coverage gaps
+
+Each reviewer reads the codebase independently and reports findings. The orchestrator then:
+1. De-duplicates findings flagged by multiple reviewers (these are highest signal)
+2. Resolves contradictions (one reviewer says "extract this", another says "inline this")
+3. Produces a unified, ranked priority list
+4. Flags any findings that ONLY one reviewer caught (long tail)
+
+Output:
+- 🔥 Critical (multiple reviewers flagged)
+- ⚠️ Important (single high-confidence flag)
+- 💡 Polish (style / hygiene / minor)
+- ⚖️ Contested (reviewers disagreed — needs a human call)`
+  },
+  {
+    id: "A-22", wave: 7, waveTitle: "Wave 7 — Cross-cutting passes", tier: "L", time: "~4h",
+    title: "/bug-hunt-swarm — focused bug hunt across the codebase",
+    content: `/bug-hunt-swarm
+
+Run a focused bug hunt on {{APP_NAME}}.
+
+App location: {{APP_PATH}}
+
+Unlike the audit prompts, this looks specifically for BUGS — actual broken behavior, not style or architecture issues.
+
+Hunt for:
+1. Off-by-one errors in list slicing, pagination, or date math
+2. Optional handling bugs — silent nil coalescing that hides real failures
+3. State machine bugs in view models — invalid state combinations possible? (e.g. loading and error both set)
+4. Race conditions in async flows (especially around auth, sign-in, and onboarding completion)
+5. Timer / Task lifecycle leaks — Tasks not cancelled when a view disappears, timers not invalidated
+6. Cache invalidation bugs — data shown after sign-out, stale data after an edit
+7. Network error handling — what happens when the backend returns 401, 403, 500, or times out?
+8. Date/timezone bugs — event dates, durations, and "today" boundaries across timezones
+9. Empty/zero handling — division by zero in calculators, percentages, and averages
+10. Parsing edge cases — malformed files or payloads, missing fields
+11. Scan and deep-link edge cases — duplicate scans, expired payloads, untrusted payloads
+12. Notification handling — tapping a notification for content that has since been deleted
+
+For each finding: file + line, repro scenario, severity (Crash / Wrong-result / Degraded-UX), fix.
+Be skeptical — flag suspicious code even if you can't confirm the bug.`
+  }
+];
+
+const STATE_KEY = "swift-audit-prompts:state";
+const PROJECT_KEY = "swift-audit-prompts:project";
+const DEFAULT_EXPANDED = { "how-to": true };
+
+function readJSON(key) {
+  try {
+    const raw = localStorage.getItem(key);
+    const value = raw ? JSON.parse(raw) : null;
+    return value && typeof value === "object" ? value : {};
+  } catch (e) {
+    return {};
+  }
+}
+
+function writeJSON(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (e) { /* storage unavailable: state lasts for this visit only */ }
+}
+
+const saved = readJSON(STATE_KEY);
+let state = {
+  done: saved.done && typeof saved.done === "object" ? saved.done : {},
+  expanded: saved.expanded && typeof saved.expanded === "object" ? saved.expanded : {},
+  filter: ["all", "todo", "done"].includes(saved.filter) ? saved.filter : "all",
+};
+let project = readJSON(PROJECT_KEY);
+
+function saveState() { writeJSON(STATE_KEY, state); }
+
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function fieldValue(key) {
+  const v = project[key];
+  return typeof v === "string" ? v.trim() : "";
+}
+
+// Fill placeholders. mode "text" is what gets copied; mode "html" highlights filled values for display.
+function fill(template, mode) {
+  const kept = template.split("\n").filter(line =>
+    !FIELDS.some(f => f.optional && !fieldValue(f.key) && line.includes(`{{${f.key}}}`))
+  ).join("\n");
+  if (mode === "html") {
+    return escapeHtml(kept).replace(/\{\{([A-Z_]+)\}\}/g, (m, key) => {
+      const f = FIELD_BY_KEY[key];
+      if (!f) return m;
+      return `<mark class="var" title="${escapeHtml(f.label)}">${escapeHtml(fieldValue(key) || f.fallback)}</mark>`;
+    });
+  }
+  return kept.replace(/\{\{([A-Z_]+)\}\}/g, (m, key) => {
+    const f = FIELD_BY_KEY[key];
+    return f ? (fieldValue(key) || f.fallback) : m;
+  });
+}
+
+function isExpanded(id) {
+  return id in state.expanded ? !!state.expanded[id] : !!DEFAULT_EXPANDED[id];
+}
+
+function renderFields() {
+  document.getElementById("fieldGrid").innerHTML = FIELDS.map(f => `
+    <label class="field">
+      <span class="field-label">${escapeHtml(f.label)}</span>
+      <input type="text" data-key="${f.key}" value="${escapeHtml(fieldValue(f.key))}" placeholder="${escapeHtml(f.placeholder)}" autocomplete="off" autocapitalize="off" spellcheck="false">
+    </label>`).join("");
+}
+
+function renderHead(p, { checkable, copyLabel }) {
+  const expanded = isExpanded(p.id);
+  const done = !!state.done[p.id];
+  const check = checkable
+    ? `<button type="button" class="check" role="checkbox" aria-checked="${done}" aria-label="Mark ${escapeHtml(p.id)} reviewed" data-id="${escapeHtml(p.id)}" data-focus="check:${escapeHtml(p.id)}"></button>`
+    : "";
+  const tier = p.tier ? `<span class="tier-badge tier-${p.tier.toLowerCase()}"><span class="visually-hidden">Size </span>${escapeHtml(p.tier)}</span>` : "";
+  const time = p.time ? `<span class="prompt-time"><span class="visually-hidden">Estimated time </span>${escapeHtml(p.time)}</span>` : "";
+  const copy = copyLabel
+    ? `<button type="button" class="copy-btn" data-id="${escapeHtml(p.id)}" data-focus="copy:${escapeHtml(p.id)}" aria-label="${escapeHtml(p.kind ? copyLabel : `${copyLabel} ${p.id}`)}"><span aria-hidden="true">📋 </span><span class="label">${escapeHtml(copyLabel)}</span></button>`
+    : "";
+  return `
+      <div class="prompt-head" data-id="${escapeHtml(p.id)}">
+        <div class="check-wrap">${check}</div>
+        <div class="prompt-meta">
+          <span class="prompt-code">${escapeHtml(p.code || p.id)}</span>
+          ${tier}
+          <${p.kind ? "h2" : "h3"} class="prompt-title">${escapeHtml(p.title)}</${p.kind ? "h2" : "h3"}>
+          ${time}
+        </div>
+        <div class="prompt-actions">
+          ${copy}
+          <button type="button" class="toggle-btn" data-id="${escapeHtml(p.id)}" data-focus="toggle:${escapeHtml(p.id)}" aria-expanded="${expanded}" aria-controls="body-${escapeHtml(p.id)}" aria-label="${escapeHtml(p.kind ? p.title : `Prompt ${p.id} details`)}"><span aria-hidden="true">▼</span></button>
+        </div>
+      </div>`;
+}
+
+function renderCard(p) {
+  const expanded = isExpanded(p.id);
+  const done = !!state.done[p.id];
+  const classes = ["prompt-card"];
+  if (p.kind) classes.push("preamble");
+  if (done) classes.push("done");
+  const body = p.kind === "info"
+    ? `<div class="prompt-body prose" id="body-${escapeHtml(p.id)}"${expanded ? "" : " hidden"}>${p.html}</div>`
+    : `<div class="prompt-body" id="body-${escapeHtml(p.id)}"${expanded ? "" : " hidden"}><pre>${fill(p.content, "html")}</pre></div>`;
+  return `
+    <article class="${classes.join(" ")}" id="${escapeHtml(p.id)}">
+      ${renderHead(p, { checkable: !p.kind, copyLabel: p.kind === "info" ? null : (p.copyLabel || "Copy") })}
+      ${body}
+    </article>`;
+}
+
+function renderSkillItem(name) {
+  const src = SKILL_SOURCES[name];
+  if (!src) return `<li><code>${escapeHtml(name)}</code></li>`;
+  const who = [src.author, src.license].filter(Boolean).join(" · ");
+  return `<li><a href="${escapeHtml(src.url)}"><code>${escapeHtml(name)}</code></a>${who ? ` <span class="who">${escapeHtml(who)}</span>` : ""}</li>`;
+}
+
+function skillsCard() {
+  return {
+    id: "skills",
+    kind: "info",
+    code: "SKILLS",
+    title: "Skills these prompts use",
+    html: `
+<p>Install the skills you plan to run with whatever you use to manage skills, or copy each one into <code>~/.claude/skills/</code>. Every skill belongs to its author and keeps its own license. swift-development was called swift-best-practices before upstream renamed it.</p>
+<h3>Loaded by the base prompt (${SKILLS.base.length})</h3>
+<ul class="skill-list">${SKILLS.base.map(renderSkillItem).join("")}</ul>
+<h3>Used by a single audit (${SKILLS.extra.length})</h3>
+<ul class="skill-list">${SKILLS.extra.map(renderSkillItem).join("")}</ul>`,
+  };
+}
+
+function render() {
+  const container = document.getElementById("prompts");
+  const active = document.activeElement;
+  const focusKey = active && container.contains(active) ? active.dataset.focus : null;
+  const activeCard = focusKey ? active.closest(".prompt-card") : null;
+  const prevIds = activeCard ? [...container.querySelectorAll(".prompt-card")].map(c => c.id) : [];
+
+  const preambles = PROMPTS.filter(p => p.kind);
+  const audits = PROMPTS.filter(p => !p.kind);
+  let html = preambles.map(renderCard).join("") + renderCard(skillsCard());
+
+  const visible = audits.filter(p => {
+    const done = !!state.done[p.id];
+    return state.filter === "all" || (state.filter === "done" ? done : !done);
+  });
+
+  let currentWave = null;
+  visible.forEach(p => {
+    if (p.waveTitle !== currentWave) {
+      if (currentWave !== null) html += `</div></section>`;
+      currentWave = p.waveTitle;
+      const waveItems = audits.filter(x => x.waveTitle === p.waveTitle);
+      const waveDone = waveItems.filter(x => state.done[x.id]).length;
+      html += `<section class="wave-section"><div class="wave-header"><h2 class="wave-title">${escapeHtml(p.waveTitle)}</h2><span class="wave-meta">${waveDone} / ${waveItems.length} done</span></div><div class="wave-items">`;
+    }
+    html += renderCard(p);
+  });
+  if (currentWave !== null) html += `</div></section>`;
+  if (visible.length === 0) html += `<div class="empty-state">No prompts match this filter.</div>`;
+
+  container.innerHTML = html;
+  if (focusKey) {
+    let target = container.querySelector(`[data-focus="${CSS.escape(focusKey)}"]`);
+    if (!target && activeCard) {
+      // The card left the filtered list: move to its neighbour rather than the top of the page.
+      const i = prevIds.indexOf(activeCard.id);
+      const order = [...prevIds.slice(i + 1), ...prevIds.slice(0, i).reverse()];
+      const nextId = order.find(id => container.querySelector(`#${CSS.escape(id)} .check`));
+      target = nextId ? container.querySelector(`#${CSS.escape(nextId)} .check`) : document.querySelector('.filter-btn[aria-pressed="true"]');
+    }
+    (target || container).focus();
+  }
+  const status = document.getElementById("listStatus");
+  const message = visible.length ? `Showing ${visible.length} of ${audits.length} audits` : "No audits match this filter";
+  if (status.textContent !== message) status.textContent = message;
+  updateProgress(audits);
+}
+
+let renderQueued = false;
+function renderSoon() {
+  if (renderQueued) return;
+  renderQueued = true;
+  requestAnimationFrame(() => { renderQueued = false; render(); });
+}
+
+function updateProgress(audits) {
+  const done = audits.filter(p => state.done[p.id]).length;
+  const pct = audits.length > 0 ? (done / audits.length) * 100 : 0;
+  document.getElementById("completedCount").textContent = done;
+  document.getElementById("totalCount").textContent = audits.length;
+  document.getElementById("progressFill").style.width = `${pct}%`;
+  const bar = document.getElementById("progressBar");
+  bar.setAttribute("aria-valuenow", String(done));
+  bar.setAttribute("aria-valuemax", String(audits.length));
+}
+
+async function copyText(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch (e) {
+    // Clipboard API needs a secure context; fall back for file:// and older browsers.
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    let ok = false;
+    try { ok = document.execCommand("copy"); } catch (err) { ok = false; }
+    ta.remove();
+    return ok;
+  }
+}
+
+async function copyPrompt(btn) {
+  const prompt = PROMPTS.find(p => p.id === btn.dataset.id);
+  if (!prompt || !prompt.content) return;
+  const ok = await copyText(fill(prompt.content, "text"));
+  if (!ok) {
+    showToast("Copy failed. Expand the prompt and select it by hand.");
+    return;
+  }
+  const label = btn.querySelector(".label");
+  const original = label.textContent;
+  btn.classList.add("copied");
+  label.textContent = "Copied";
+  showToast(`${prompt.code || prompt.id} copied to clipboard`);
+  setTimeout(() => {
+    btn.classList.remove("copied");
+    label.textContent = original;
+  }, 1500);
+}
+
+function toggleExpanded(id) {
+  state.expanded[id] = !isExpanded(id);
+  saveState();
+  render();
+}
+
+function showToast(msg) {
+  const toast = document.getElementById("toast");
+  toast.textContent = msg;
+  toast.classList.add("visible");
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => toast.classList.remove("visible"), 1800);
+}
+
+document.getElementById("prompts").addEventListener("click", e => {
+  const copy = e.target.closest(".copy-btn");
+  if (copy) { copyPrompt(copy); return; }
+  const check = e.target.closest(".check");
+  if (check) {
+    state.done[check.dataset.id] = !state.done[check.dataset.id];
+    saveState();
+    render();
+    return;
+  }
+  const toggle = e.target.closest(".toggle-btn");
+  if (toggle) { toggleExpanded(toggle.dataset.id); return; }
+  const head = e.target.closest(".prompt-head");
+  if (head) toggleExpanded(head.dataset.id);
+});
+
+document.getElementById("fieldGrid").addEventListener("input", e => {
+  const key = e.target.dataset.key;
+  if (!key) return;
+  project[key] = e.target.value;
+  writeJSON(PROJECT_KEY, project);
+  renderSoon();
+});
+
+document.getElementById("clearProject").addEventListener("click", () => {
+  project = {};
+  writeJSON(PROJECT_KEY, project);
+  renderFields();
+  render();
+});
+
+function syncFilterButtons() {
+  document.querySelectorAll(".filter-btn").forEach(b => {
+    b.setAttribute("aria-pressed", String(b.dataset.filter === state.filter));
+  });
+}
+
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    state.filter = btn.dataset.filter;
+    saveState();
+    syncFilterButtons();
+    render();
+  });
+});
+
+document.getElementById("resetAll").addEventListener("click", () => {
+  if (confirm("Reset all checkmarks and expanded cards? Your project details and the prompts stay as they are.")) {
+    state = { done: {}, expanded: {}, filter: state.filter };
+    saveState();
+    render();
+  }
+});
+
+// Opening page.html#A-03 expands and scrolls to that prompt.
+function openFromHash() {
+  let id;
+  try { id = decodeURIComponent(location.hash.slice(1)); } catch (e) { return; }
+  if (!id || !(id === "skills" || PROMPTS.some(p => p.id === id))) return;
+  if (state.filter !== "all") {
+    state.filter = "all";
+    syncFilterButtons();
+  }
+  state.expanded[id] = true;
+  saveState();
+  render();
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ block: "start" });
+}
+window.addEventListener("hashchange", openFromHash);
+
+const header = document.querySelector("header.app-header");
+const syncHeaderHeight = () => document.documentElement.style.setProperty("--header-h", `${header.offsetHeight}px`);
+if ("ResizeObserver" in window) new ResizeObserver(syncHeaderHeight).observe(header);
+syncHeaderHeight();
+
+renderFields();
+syncFilterButtons();
+render();
+openFromHash();
+</script>
+</body>
+</html>
