@@ -6,7 +6,7 @@ on:
     - cron: "17 14 * * 1"
   workflow_dispatch:
   pull_request:
-    paths: [README.md, index.html, CONTRIBUTING.md, SECURITY.md]
+    paths: [README.md, index.html, CONTRIBUTING.md, SECURITY.md, .github/workflows/links.yml]
 
 permissions:
   contents: read
@@ -15,11 +15,12 @@ jobs:
   links:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: lycheeverse/lychee-action@v2
         with:
           args: >-
             --no-progress
+            --exclude-loopback
             --accept '200..=299,403,429'
             --exclude 'mvoshell652\.github\.io'
             --exclude 'security/advisories/new'

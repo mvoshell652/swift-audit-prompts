@@ -17,15 +17,17 @@ const errors = [];
 const fail = message => errors.push(message);
 const dupes = list => list.filter((x, i) => list.indexOf(x) !== i);
 
-let html = readFileSync(pagePath, "utf8");
-let readme = readFileSync(readmePath, "utf8");
+// Browsers normalise CRLF to LF before hashing inline script and style, so do the same here.
+let html = readFileSync(pagePath, "utf8").replace(/\r\n?/g, "\n");
+let readme = readFileSync(readmePath, "utf8").replace(/\r\n?/g, "\n");
 const originalHtml = html;
 const originalReadme = readme;
 
 // ---- Content Security Policy: the one inline <script> and <style> are allowed by hash only.
 const scriptText = (html.match(/<script>([\s\S]*?)<\/script>/) || [])[1];
 const styleText = (html.match(/<style>([\s\S]*?)<\/style>/) || [])[1];
-if (scriptText === undefined || styleText === undefined) {
+const countTags = tag => (html.match(new RegExp(`<${tag}\\b`, "gi")) || []).length;
+if (scriptText === undefined || styleText === undefined || countTags("script") !== 1 || countTags("style") !== 1) {
   console.error("✗ index.html needs exactly one inline <script> and one inline <style>");
   process.exit(1);
 }
@@ -43,7 +45,9 @@ if (!cspPattern.test(html)) {
 let data;
 try {
   new vm.Script(scriptText, { filename: "index.html <script>" });
-  const dataPart = scriptText.slice(0, scriptText.indexOf("const STATE_KEY"));
+  const cut = scriptText.indexOf("const STATE_KEY");
+  if (cut < 0) throw new Error('the script must still contain "const STATE_KEY"; the check loads the data arrays above that line');
+  const dataPart = scriptText.slice(0, cut);
   const sandbox = {};
   vm.runInNewContext(`${dataPart}\nglobalThis.data = { FIELDS, SKILLS, SKILL_SOURCES, PROMPTS };`, sandbox);
   data = sandbox.data;
@@ -81,7 +85,9 @@ dupes(allSkills).forEach(s => fail(`${s} is listed twice in SKILLS`));
 for (const name of allSkills) {
   const src = SKILL_SOURCES[name];
   if (!src) { fail(`${name} has no entry in SKILL_SOURCES`); continue; }
-  if (!/^https:\/\/github\.com\/[\w.-]+\/[\w.-]+/.test(src.url)) fail(`${name}'s source should be the author's GitHub repo, not ${src.url}`);
+  const owner = (/^https:\/\/github\.com\/([\w.-]+)\/[\w.-]+/.exec(src.url) || [])[1];
+  if (!owner) fail(`${name}'s source should be the author's GitHub repo, not ${src.url}`);
+  else if (owner.toLowerCase() !== (src.author || "").slice(1).toLowerCase()) fail(`${name}'s source is github.com/${owner} but its author is ${src.author}; link the author's own repo`);
   if (!/^@[\w-]+$/.test(src.author || "")) fail(`${name}'s author should be a GitHub handle like @name`);
   if (!src.license) fail(`${name} needs a license (or "no license file")`);
 }
@@ -127,15 +133,19 @@ for (const m of html.matchAll(/(?:aria-valuemax="|id="totalCount">)(\d+)/g)) {
 }
 
 // ---- The page loads nothing from other sites (README and SECURITY.md promise this).
+// Prompt text is escaped before it is shown, so only the page's own markup, style and code are scanned.
+const code = scriptText.replace(/content: `(?:[^`\\]|\\[\s\S])*`/g, "content: ``");
+const markup = html.replace(scriptText, () => "").replace(styleText, () => "");
 const loaders = [
-  [/<script\b[^>]*\bsrc=/i, "an external <script>"],
-  [/<link\b(?![^>]*\bhref="data:)[^>]*\bhref=/i, "a <link> to another file"],
-  [/<(?:img|iframe|video|audio|source|embed|object)\b/i, "an embedded resource"],
-  [/@import|url\(\s*["']?(?!data:)/i, "a CSS import or url()"],
-  [/\bfetch\(|XMLHttpRequest|sendBeacon|new WebSocket|new EventSource/, "a network request"],
+  [markup, /<script\b[^>]*\bsrc=/i, "an external <script>"],
+  [markup, /<link\b(?![^>]*\bhref="data:)[^>]*\bhref=/i, "a <link> to another file"],
+  [markup, /<(?:img|iframe|video|audio|source|embed|object)\b/i, "an embedded resource"],
+  [markup, /<[a-z][^>]*\s(?:style|on[a-z]+)\s*=/i, "an inline style or event-handler attribute, which the CSP blocks"],
+  [styleText, /@import|url\(\s*["']?(?!data:)/i, "a CSS import or url()"],
+  [code, /\bfetch\(|XMLHttpRequest|sendBeacon|new WebSocket|new EventSource|\bimport\s*\(|new (?:Image|Worker|SharedWorker)\b|serviceWorker/, "a network request"],
 ];
-for (const [pattern, what] of loaders) {
-  if (pattern.test(html)) fail(`index.html contains ${what}; the page must stay self-contained`);
+for (const [text, pattern, what] of loaders) {
+  if (pattern.test(text)) fail(`index.html contains ${what}; the page must stay self-contained`);
 }
 
 // ---- README tables, generated from the page
