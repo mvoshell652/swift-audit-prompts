@@ -79,6 +79,8 @@ audits.forEach((p, i) => {
   for (const [label, text] of [["title", p.title || ""], ["wave title", p.waveTitle || ""]]) {
     if (/[—–]|&|\+| \/ |\bvs\.|a11y/.test(text)) fail(`${p.id}'s ${label} "${text}" uses a dash or shorthand; write it out in words`);
   }
+  // Longer titles make GitHub squeeze the README table onto two lines per row.
+  if ((p.title || "").length > 44) fail(`${p.id}'s title is ${p.title.length} characters; keep it to 44 so the README table fits`);
   const prev = audits[i - 1];
   if (prev && p.wave < prev.wave) fail(`${p.id} is in wave ${p.wave} but comes after wave ${prev.wave}`);
   if (prev && p.wave === prev.wave && p.waveTitle !== prev.waveTitle) fail(`${p.id} and ${prev.id} are both wave ${p.wave} but have different wave titles`);
@@ -153,8 +155,6 @@ for (const [text, pattern, what] of loaders) {
 }
 
 // ---- README tables, generated from the page
-// IDs use a non-breaking hyphen (U+2011) so a narrow column can't split "A-01" across two lines.
-const unbreakable = id => id.replace(/-/g, "\u2011");
 const readableTime = t => {
   const m = /^~(\d+)([hd])$/.exec(t);
   if (!m) return t;
@@ -163,16 +163,17 @@ const readableTime = t => {
 };
 const promptRows = audits.map(p => {
   const skill = (p.content.match(/^\/([a-z0-9-]+)\n/) || [])[1];
-  return `| [${unbreakable(p.id)}](${PAGE_URL}#${p.id}) | ${p.title} | \`/${skill}\` | ${readableTime(p.time)} |`;
+  // The ID sits inside the wide first cell, so a narrow column can never split "A-01" at its hyphen.
+  return `| **[${p.id}](${PAGE_URL}#${p.id})** ${p.title} | \`/${skill}\` | ${readableTime(p.time)} |`;
 });
 const skillRows = allSkills.filter(name => SKILL_SOURCES[name]).map(name => {
   const src = SKILL_SOURCES[name];
-  const usedBy = audits.filter(p => p.content.startsWith(`/${name}\n`)).map(p => unbreakable(p.id));
+  const usedBy = audits.filter(p => p.content.startsWith(`/${name}\n`)).map(p => p.id);
   if (SKILLS.base.includes(name)) usedBy.unshift("base\u00a0prompt");
   return `| [${name}](${src.url}) | [${src.author}](https://github.com/${src.author.slice(1)}) | ${src.license} | ${usedBy.join(", ") || "—"} |`;
 });
 const tables = {
-  prompts: ["| ID | What it checks | Skill | Time |", "|---|---|---|---|", ...promptRows].join("\n"),
+  prompts: ["| Audit | Skill | Time |", "|---|---|---|", ...promptRows].join("\n"),
   skills: ["| Skill | Author | License | Used by |", "|---|---|---|---|", ...skillRows].join("\n"),
 };
 for (const [name, table] of Object.entries(tables)) {

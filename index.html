@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-TearUZNVc/fvZtA+zm34fYS1NU8/ygp72cMkxRRKDCw='; style-src 'sha256-UoamI4H9taiPZEJZP9DT1EAPaN2DHpfxfalPlUuGS74='; img-src data:; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-ix84DQ4GdM6Ih83QuH8YC0EfRdbRy96IE8+sLc8nEMQ='; style-src 'sha256-UoamI4H9taiPZEJZP9DT1EAPaN2DHpfxfalPlUuGS74='; img-src data:; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Swift Audit Prompts</title>
 <meta name="description" content="22 copy-paste audit prompts for Swift and SwiftUI apps, built for Claude Code and Swift agent skills.">
@@ -520,7 +520,7 @@
       <span class="progress-text"><span id="completedCount">0</span> of <span id="totalCount">22</span> done</span>
     </div>
     <div class="header-actions">
-      <div class="filter-group" role="group" aria-label="Filter prompts">
+      <div class="filter-group" role="group" aria-label="Filter audits">
         <button type="button" class="filter-btn" data-filter="all" aria-pressed="true">All</button>
         <button type="button" class="filter-btn" data-filter="todo" aria-pressed="false">To do</button>
         <button type="button" class="filter-btn" data-filter="done" aria-pressed="false">Done</button>
@@ -534,7 +534,7 @@
   <section class="project-card" aria-labelledby="projectTitle">
     <div class="project-head">
       <h2 id="projectTitle">Your project</h2>
-      <p class="hint">Fills in every prompt below. Saved only in this browser.</p>
+      <p class="hint">Fills in every prompt below. Blank iOS and Swift fields use 26 and 6.2. Saved only in this browser.</p>
       <button type="button" class="link-btn" id="clearProject">Clear fields</button>
     </div>
     <div class="field-grid" id="fieldGrid"></div>
@@ -612,30 +612,32 @@ const HOW_TO_HTML = `
 <p>Each prompt is written for a fresh Claude Code session with the named skill installed. The first line is the slash command. The rest tells the skill what to audit and how to report.</p>
 <ol>
   <li>Fill in <strong>Your project</strong> above. Every prompt updates as you type, and the highlighted text shows what was filled in.</li>
+  <li>Install the skill for each audit you plan to run. The <a href="#skills">skills list</a> below links to each one.</li>
   <li>Open a fresh Claude Code session in your project root.</li>
   <li>Optional: paste the <strong>base prompt</strong> first to load all 20 Swift skills at once. <a href="https://github.com/mvoshell652/playlist">Playlist</a> can save that list as a single slash command.</li>
   <li>Click <strong>Copy</strong> on an audit, paste it into the session, and let it run.</li>
-  <li>Tick the box once you've triaged the findings. Your progress stays in this browser.</li>
+  <li>Mark an audit done with its checkbox once you've triaged the findings. Your progress stays in this browser.</li>
 </ol>
 <h3>Run order</h3>
 <ul>
   <li>A-01 sets the baseline. Run it first.</li>
-  <li>A-02 to A-04 cover foundational correctness. Fix the critical findings before going further.</li>
-  <li>A-05 to A-11 dig into performance, accessibility, modernization and UI.</li>
+  <li>A-02 to A-04 cover foundational correctness. Fix the findings each audit ranks highest before going further.</li>
+  <li>A-05 to A-07 dig into performance and accessibility.</li>
+  <li>A-08 to A-11 cover modernization and UI quality.</li>
   <li>A-12 to A-14 cover code quality, style and test coverage.</li>
-  <li>A-15 to A-20 are specialist audits: Figma coverage, Accessibility Inspector, focus, offline caching, copy and a simulator runbook.</li>
+  <li>A-15 to A-20 are specialist audits: Figma coverage, Accessibility Inspector, focus, offline caching, interface copy and a simulator runbook.</li>
   <li>A-21 and A-22 run several agents across the whole codebase. Save them for last.</li>
 </ul>
 <h3>Time estimates</h3>
-<p>Each card shows a rough time to run the audit and triage what it finds. The colored badge gives the same size at a glance: S is about 2 hours, M about 3, L about 4 and XL about a day.</p>
+<p>Each card shows a rough time to run the audit and triage what it finds. The size badge gives the same estimate at a glance: S is about 2 hours, M about 3, L about 4 and XL about a day.</p>
 <h3>Skills left out on purpose</h3>
 <ul>
-  <li>swift-concurrency, swift-concurrency-pro, swift-testing and swift-testing-pro have no audit of their own. The -expert audits cover that ground, and the base prompt still loads them.</li>
-  <li>core-data-expert: A-18 (swiftdata-pro) covers the persistence question.</li>
+  <li><code>swift-concurrency</code>, <code>swift-concurrency-pro</code>, <code>swift-testing</code> and <code>swift-testing-pro</code>: no audit of their own. A-02 uses <code>swift-concurrency-expert</code> and A-14 uses <code>swift-testing-expert</code>, and the base prompt still loads all four.</li>
+  <li><code>core-data-expert</code>: A-18 uses <code>swiftdata-pro</code>, which covers local persistence.</li>
   <li>UIKit and AppKit accessibility auditors: these prompts assume a SwiftUI codebase.</li>
-  <li>macOS packaging skills: wrong platform.</li>
-  <li>ios-debugger-agent: an interactive runtime tool rather than a static audit.</li>
-  <li>App Store Connect (asc-*) skills: release workflow, not code audit.</li>
+  <li>macOS packaging skills: these prompts are for iOS apps.</li>
+  <li><code>ios-debugger-agent</code>: an interactive runtime tool, not a static audit.</li>
+  <li>App Store Connect (<code>asc-*</code>) skills: they cover release workflow, not code audits.</li>
 </ul>`;
 
 const PROMPTS = [
@@ -791,7 +793,7 @@ End with a ranked remediation list.`
   },
   {
     id: "A-04", wave: 2, waveTitle: "Foundational correctness", tier: "L", time: "~4h",
-    title: "Architecture boundaries and dependency injection",
+    title: "Architecture and dependency injection",
     content: `/swift-architecture-skill
 
 Audit the architecture of {{APP_NAME}} for structural and design quality issues.
@@ -1142,7 +1144,7 @@ End with a list of Command shortcuts to add for power users.`
   },
   {
     id: "A-18", wave: 6, waveTitle: "Specialist audits", tier: "M", time: "~3h",
-    title: "Offline caching with SwiftData",
+    title: "Should you cache offline with SwiftData?",
     content: `/swiftdata-pro
 
 Evaluate whether {{APP_NAME}} should adopt SwiftData for local persistence and offline caching.
@@ -1356,8 +1358,8 @@ function spokenTime(t) {
   const m = /^~(\d+)([hd])$/.exec(t);
   if (!m) return t;
   const n = Number(m[1]);
-  if (m[2] === "d") return n === 1 ? "about a day" : `about ${n} days`;
-  return n === 1 ? "about an hour" : `about ${n} hours`;
+  if (m[2] === "d") return n === 1 ? "Takes about a day" : `Takes about ${n} days`;
+  return n === 1 ? "Takes about an hour" : `Takes about ${n} hours`;
 }
 
 function renderHead(p, { checkable, copyLabel }) {
@@ -1424,7 +1426,7 @@ function skillsCard() {
 <p>Each audit needs its skill installed. Use your usual skill manager, or copy each skill's folder into <code>~/.claude/skills/</code>. Every skill belongs to its author and keeps its own license. swift-development was called swift-best-practices before upstream renamed it.</p>
 <h3>Loaded by the base prompt (${SKILLS.base.length})</h3>
 <ul class="skill-list">${SKILLS.base.map(renderSkillItem).join("")}</ul>
-<h3>Used by a single audit (${SKILLS.extra.length})</h3>
+<h3>Not loaded by the base prompt (${SKILLS.extra.length})</h3>
 <ul class="skill-list">${SKILLS.extra.map(renderSkillItem).join("")}</ul>`,
   };
 }
@@ -1459,7 +1461,7 @@ function render() {
   if (currentWave !== null) html += `</div></section>`;
   const emptyMessage = state.filter === "todo"
     ? `All ${audits.length} audits are done.`
-    : "Nothing ticked yet. Tick an audit once you've triaged its findings.";
+    : "No audits are done yet. Switch to All, then mark an audit done once you've triaged its findings.";
   if (visible.length === 0) html += `<div class="empty-state">${escapeHtml(emptyMessage)}</div>`;
 
   container.innerHTML = html;
@@ -1496,6 +1498,7 @@ function updateProgress(audits) {
   const bar = document.getElementById("progressBar");
   bar.setAttribute("aria-valuenow", String(done));
   bar.setAttribute("aria-valuemax", String(audits.length));
+  bar.setAttribute("aria-valuetext", `${done} of ${audits.length}`);
 }
 
 async function copyText(text) {
@@ -1524,7 +1527,7 @@ async function copyPrompt(btn) {
   const name = prompt.kind ? "the base prompt" : prompt.id;
   const ok = await copyText(fill(prompt.content, "text"));
   if (!ok) {
-    showToast(`Couldn't copy ${name}. Open the prompt and select its text instead.`);
+    showToast(`Couldn't copy ${name}. Open the prompt and select its text instead.`, 8000);
     return;
   }
   const label = btn.querySelector(".label");
@@ -1544,12 +1547,16 @@ function toggleExpanded(id) {
   render();
 }
 
-function showToast(msg) {
+function showToast(msg, ms = 3500) {
   const toast = document.getElementById("toast");
   toast.textContent = msg;
   toast.classList.add("visible");
   clearTimeout(showToast._t);
-  showToast._t = setTimeout(() => toast.classList.remove("visible"), 1800);
+  showToast._t = setTimeout(() => {
+    toast.classList.remove("visible");
+    // Empty the live region once the toast has faded, so nothing stale is left to read.
+    showToast._t = setTimeout(() => { toast.textContent = ""; }, 300);
+  }, ms);
 }
 
 document.getElementById("prompts").addEventListener("click", e => {
@@ -1599,7 +1606,7 @@ document.querySelectorAll(".filter-btn").forEach(btn => {
 });
 
 document.getElementById("resetAll").addEventListener("click", () => {
-  if (confirm("Clear your progress? This unticks every audit and closes every open card. Your project details stay.")) {
+  if (confirm("Reset progress? This marks every audit as not done and puts the cards back as they started. Your project details stay.")) {
     state = { done: {}, expanded: {}, filter: state.filter };
     saveState();
     render();
