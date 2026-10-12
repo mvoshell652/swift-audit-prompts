@@ -1,0 +1,34 @@
+name: Something isn't right
+description: A prompt gave a poor or wrong result, the page misbehaved, or a link is broken
+labels: [bug]
+body:
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where
+      options:
+        - An audit prompt
+        - The base prompt
+        - The page itself
+        - The README or a link
+    validations:
+      required: true
+  - type: input
+    id: prompt
+    attributes:
+      label: Which prompt
+      description: The ID on the card, if it's about a prompt.
+      placeholder: A-03
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you expected and what you got instead. For a prompt, paste the part of Claude's answer that went wrong, and leave out anything private from your codebase.
+    validations:
+      required: true
+  - type: input
+    id: setup
+    attributes:
+      label: Setup
+      description: "Your Claude Code version (`claude --version`) and where you ran it, or your browser if the page misbehaved"
+      placeholder: "Claude Code 2.1.228 in the terminal, or Safari 26"

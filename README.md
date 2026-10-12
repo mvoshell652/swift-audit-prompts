@@ -1,10 +1,12 @@
 # Swift Audit Prompts
 
-[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![check](https://github.com/mvoshell652/swift-audit-prompts/actions/workflows/check.yml/badge.svg)](https://github.com/mvoshell652/swift-audit-prompts/actions/workflows/check.yml) [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 22 copy-paste audit prompts for Swift and SwiftUI apps. Each one runs a focused review in [Claude Code](https://claude.com/claude-code) with a Swift agent skill, covering concurrency, security, architecture, performance, accessibility, Liquid Glass, testing, UI copy and more.
 
 **Open the page: https://mvoshell652.github.io/swift-audit-prompts/**
+
+<img src="docs/screenshot.jpg" width="760" alt="The Swift Audit Prompts page. Your project fields are filled in for an app called Acme with a Firebase backend. Below them, audit A-03 is expanded and its prompt shows Acme, the project path and Firebase highlighted where they were filled in.">
 
 Fill in your app's name and path once and every prompt updates. Copy a prompt, paste it into a fresh Claude Code session in your project, and tick it off once you've triaged the findings. Your project details and progress stay in your browser.
 
@@ -14,6 +16,7 @@ A skill knows what good Swift looks like, but typing `/swiftui-pro` on its own d
 
 ## The prompts
 
+<!-- prompts:start -->
 | ID | Size | Skill | What it checks |
 |---|---|---|---|
 | [A-01](https://mvoshell652.github.io/swift-audit-prompts/#A-01) | XL | `/swiftui-pro` | Flagship SwiftUI quality audit |
@@ -38,6 +41,7 @@ A skill knows what good Swift looks like, but typing `/swiftui-pro` on its own d
 | [A-20](https://mvoshell652.github.io/swift-audit-prompts/#A-20) | M | `/ios-simulator-skill` | Runtime smoke test runbook |
 | [A-21](https://mvoshell652.github.io/swift-audit-prompts/#A-21) | XL | `/review-swarm` | Multi-agent parallel code review |
 | [A-22](https://mvoshell652.github.io/swift-audit-prompts/#A-22) | L | `/bug-hunt-swarm` | Focused bug hunt across the codebase |
+<!-- prompts:end -->
 
 Sizes are the rough time to run an audit and triage what it finds: S about 2 hours, M about 3, L about 4, XL about a day. Run them in order. A-01 sets the baseline, A-02 to A-04 cover foundational correctness, and A-21 and A-22 are multi-agent sweeps best saved for last.
 
@@ -55,6 +59,7 @@ To share one prompt, link to its ID, for example https://mvoshell652.github.io/s
 
 The prompts call skills written by other people. This repo links to them and doesn't include them, and each keeps its own license.
 
+<!-- skills:start -->
 | Skill | Author | License | Used by |
 |---|---|---|---|
 | [swiftui-pro](https://github.com/twostraws/SwiftUI-Agent-Skill) | [@twostraws](https://github.com/twostraws) | MIT | base prompt, A-01 |
@@ -84,6 +89,7 @@ The prompts call skills written by other people. This repo links to them and doe
 | [ios-simulator-skill](https://github.com/conorluddy/ios-simulator-skill) | [@conorluddy](https://github.com/conorluddy) | MIT | A-20 |
 | [review-swarm](https://github.com/Dimillian/Skills/tree/main/review-swarm) | [@Dimillian](https://github.com/Dimillian) | MIT | A-21 |
 | [bug-hunt-swarm](https://github.com/Dimillian/Skills/tree/main/bug-hunt-swarm) | [@Dimillian](https://github.com/Dimillian) | MIT | A-22 |
+<!-- skills:end -->
 
 `swift-development` was called `swift-best-practices` before upstream renamed it. `figma-to-swiftui` has no license file, so install it from its own repo.
 
@@ -93,11 +99,11 @@ The page is a single `index.html` with no dependencies, no build step and no net
 
 ## Privacy
 
-The page loads nothing from other sites and has no analytics. Your project details and checkmarks are saved in your browser's local storage and are never sent anywhere.
+The page loads nothing from other sites, and its Content Security Policy blocks it from trying. It has no analytics. Your project details and checkmarks are saved in your browser's local storage and are never sent anywhere.
 
 ## Contributing
 
-Issues and pull requests are welcome, especially new audits and sharper wording. Keep prompts generic: no app-specific file names, paths or keys.
+Issues and pull requests are welcome, especially new audits and sharper wording. [CONTRIBUTING.md](CONTRIBUTING.md) explains how a prompt is put together and how to run the checks. Please report security problems privately, as [SECURITY.md](SECURITY.md) describes.
 
 ## License
 
