@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: A skill itself misbehaves
+    url: https://mvoshell652.github.io/swift-audit-prompts/#skills
+    about: Each skill belongs to its author. Report skill bugs in the skill's own repo; the page links every one.
+  - name: Report a security problem
+    url: https://github.com/mvoshell652/swift-audit-prompts/security/advisories/new
+    about: Please report vulnerabilities privately, not in a public issue.
