@@ -19,9 +19,9 @@ Problems inside a skill itself belong with that skill's author. The page links e
 ## How the page protects you
 
 - It is one file with no dependencies and loads nothing from other sites. Its Content Security Policy allows only the page's own script and style, and blocks every request to anywhere else.
-- Your project details and checkmarks stay in your browser's local storage.
+- Your project details and progress stay in your browser's local storage.
 - Everything the page shows from your input or from the link is escaped first.
-- The page runs nothing on your machine. A prompt does nothing until you paste it into Claude Code yourself.
+- The page doesn't run commands on your machine. A prompt does nothing until you paste it into Claude Code yourself.
 
 ## Supported versions
 
