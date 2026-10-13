@@ -103,7 +103,7 @@ The page loads nothing from other sites, and its Content Security Policy blocks 
 
 ## Contributing
 
-Issues and pull requests are welcome, especially new audits and sharper wording. [CONTRIBUTING.md](CONTRIBUTING.md) explains how a prompt is put together and how to run the checks. Please report security problems privately, as [SECURITY.md](SECURITY.md) describes.
+Issues and pull requests are welcome, especially new audits and sharper wording. [CONTRIBUTING.md](CONTRIBUTING.md) explains how a prompt is put together and how to run the checks. Everyone taking part follows the [code of conduct](CODE_OF_CONDUCT.md). Please report security problems privately, as [SECURITY.md](SECURITY.md) describes.
 
 ## License
 

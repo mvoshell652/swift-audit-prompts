@@ -6,7 +6,7 @@ on:
     - cron: "17 14 * * 1"
   workflow_dispatch:
   pull_request:
-    paths: [README.md, index.html, CONTRIBUTING.md, SECURITY.md, .github/workflows/links.yml]
+    paths: [README.md, index.html, CONTRIBUTING.md, SECURITY.md, CODE_OF_CONDUCT.md, .github/workflows/links.yml]
 
 permissions:
   contents: read
@@ -24,7 +24,7 @@ jobs:
             --accept '200..=299,403,429'
             --exclude 'mvoshell652\.github\.io'
             --exclude 'security/advisories/new'
-            README.md index.html CONTRIBUTING.md SECURITY.md
+            README.md index.html CONTRIBUTING.md SECURITY.md CODE_OF_CONDUCT.md
           fail: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
