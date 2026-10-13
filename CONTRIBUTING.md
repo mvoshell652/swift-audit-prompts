@@ -1,6 +1,6 @@
 # Contributing
 
-Issues, ideas and pull requests are welcome, especially new audits and sharper wording.
+Issues, ideas and pull requests are welcome, especially new audits and sharper wording. Everyone taking part follows the [code of conduct](CODE_OF_CONDUCT.md).
 
 ## Run it from a checkout
 
